@@ -1,0 +1,140 @@
+﻿@model TinMatchingRecipientsSDK.Models.TinMatchingRequest.TinMatchingRecipientsCreateRequest
+@using TinMatchingRecipientsSDK.Models.Base
+@using TinMatchingRecipientsSDK.Models.Utilities
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "TinMatchingRecipientsForm" }))
+{
+    <div class="container">
+        <div class='mt-5'>
+            <div class=" fs-20 text-dark text-center ">
+                <div class="head-1">
+                    Request TIN Matching
+                </div>
+
+            </div>
+            <div class="fs-20 text-dark">
+                <span class="heading-bottom-line position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.TINMatchingDetails.Business.BusinessNm</span> <span class="text-muted fs-14">
+                    @if (Model.TINMatchingDetails.Business.TIN.Length > 10)
+                    {
+                        <span>(SSN : @Model.TINMatchingDetails.Business.TIN)</span>
+                    }
+                    else
+                    {
+                        <span>(EIN : @Model.TINMatchingDetails.Business.TIN)</span>
+                    }
+            </div>
+
+            <div class="table-responsive overflow-hidden m-3">
+                <div>
+                    <p>
+                        <span class="fw-bold">Note:</span> In SandBox, any TINs that ends with three Zeroes will return the status as "Failed". The status of the all other TINs will be "Success".
+                    </p>
+                </div>
+                <table class="table table-bordered text-field-table w-100 mx-auto" id="tbl_posts2" style="border-collapse:collapse">
+                    <thead>
+                        <tr class="bg-gray">
+                            <th class="fw-500 text-dark text-center" scope="col">S.NO</th>
+                            <th class="fw-500 text-dark text-center" scope="col"><span class="text-danger">*</span>Sequence Id</th>
+                            <th class="fw-500 text-dark text-center" scope="col"><span class="text-danger">*</span>Recipient Name</th>
+                            <th class="fw-500 text-dark position-relative text-center" scope="col"><span class="text-danger">*</span>TIN Type  <div class="form-check form-check-inline p-0 m-0"></div></th>
+                            <th class="fw-500 text-dark text-center" scope="col"><span class="text-danger">*</span>TIN</th>
+                            <th class="fw-500 text-dark text-center" scope="col" width="75px"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="dynamic-table">
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a class="btn-rounded-hover add-RecipientList rounded-circle p-2 lh-1">
+                                    <i class="mdi mdi-plus-circle-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="Add"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center m-3">
+            <button type="button" class=" btn_cancel btn-md shadow fw-500'" onclick="location.href='@Url.Action("GetBusinessList", "Business")'" id="btnback">
+                <i class="fa fa-arrow-circle-left"></i>
+                Back
+            </button>
+            <button type="button" class='btn btn_primary btn-md shadow fw-500 text-white' onclick="CreateRequest()" id="btnCreate">Submit <i class="fa fa-spinner fa-spin" aria-hidden="true" id="CreateSpinner" style="display:none"></i></button>
+        </div>
+        @Html.HiddenFor(x=>x.TINMatchingDetails.Business.BusinessId)
+
+    </div>
+
+}
+<script>
+
+    $(document).ready(function () {
+
+        var j = 0;
+        var i = 1;
+        $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].SequenceId" type="text" placeholder="Sequence Id" class="form-control seqid"></div></td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].Name" type="text" class="form-control name" placeholder="Recipient Name"></div></td><td><div class="mt-2 error"><select class="form-control tintype form-select"  name="TINMatchingDetails.Recipients[' + j + '].TINType" placeholder="Tin Type"><option value="">TIN Type</option><option>EIN</option><option>SSN</option></select></div > </td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].TIN" type="text" placeholder="TIN" class="form-control tin" maxlength="9"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+        $('.delete-record').hide();
+        j++;
+        i++;
+        //added class to inputs
+        $('a.add-RecipientList').click(function () {
+           
+            $('.delete-record').show();
+            $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].SequenceId" type="text" placeholder="Sequence Id" class="form-control seqid"></div></td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].Name" type="text" class="form-control name" placeholder="Recipient Name"></div></td><td><div class="mt-2 error"><select class="form-control tintype form-select"  name="TINMatchingDetails.Recipients[' + j + '].TINType" placeholder="Tin Type"><option value="">TIN Type</option><option>EIN</option><option>SSN</option></select></div > </td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].TIN" type="text" placeholder="TIN" class="form-control tin" maxlength="9"></div></td><td class="text-center"><a class="btn-rounded-hover delete-record rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+            j++;
+            i++;
+        });
+        $('#dynamic-table').on('click', '.delete-record', function () {
+          
+            $(this).parent().parent().remove();
+            j--; //decremnt count
+            resetValues(); //call to reset values
+        });
+        function resetValues() {
+         
+            counter = 0; //initialze to 1
+            increvalue=1;
+            //looping through tbody
+            $("#dynamic-table tr").each(function () {
+                $(this).find("td:first").html(increvalue);
+                $(this).find('.name').attr("name", "TINMatchingDetails.Recipients[" + counter + "].Name");
+                $(this).find('.tin').attr("name", "TINMatchingDetails.Recipients[" + counter + "].TIN");
+                $(this).find('.seqid').attr("name", "TINMatchingDetails.Recipients[" + counter + "].SequenceId");
+                $(this).find('.tintype').attr("name", "TINMatchingDetails.Recipients[" + counter + "].TINType");
+                counter++; //increment count
+                increvalue++;
+            })
+            if (counter == 1) {
+                $('.delete-record').hide();
+
+            }
+            i = increvalue;
+        }
+    });
+    function CreateRequest() {
+        var formdata = $("#TinMatchingRecipientsForm").serialize();
+        $("#btnCreate > i").show();
+        $("#btnCreate").prop("disabled", true);
+        $.ajax({
+            url: "/TinMatchingRecipients/TinMatchingRequest/",
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: function (data) {
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+            }
+        });
+    }
+</script>
