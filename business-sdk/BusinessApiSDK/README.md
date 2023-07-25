@@ -1,40 +1,63 @@
 # Using the Business API with C#
-Business API SDK written on C# in .Net Core framework to show how to integrate with TaxBandits Business API. This covers the following API Methods.
+Business API SDK written on C# in .Net Core framework to show how to integrate with TaxBandits Business API. 
 
-### Business
-- Create 
-- Get
-- List
-
-## Configuration
- You need to signup with TaxBandits Sandbox Developer Console at https://sandbox.taxbandits.com/User/Register to get the keys to run
-the SDK. See below for more directions:
-
-### To get the sandbox keys:
+## To get the sandbox keys:
 - Go to Sandbox Developer console: https://sandbox.taxbandits.com
 - Signup or signin to Sandbox 
 - Navigate to **settings** from the left menu and choose **API Credentials**. Copy client id, client secret and user token. 
 
-### The sandbox URLs: (Please make sure to use the right versions)
-- Sandbox Auth Server: https://testoauth.expressauth.net/v2/tbsauth 
-- API URL: https://testapi.taxbandits.com/v1.7.3 
+## Cloning and Running the Application in local
+ - Clone the project into your local machine 
+    ```bash
+    git clone https://github.com/TaxBandits/tbs-dotnet-sdk.git
+    ```
+ - Let's Navigate into the sdk-dotnet folder, then business-sdk folder.
+
+### Packages need to install
+To install Packages, right-click on your project in the Solution Explorer window and select ï¿½Manage NuGet packagesï¿½ï¿½. Then, in the NuGet Package Manager window, search for required pacakges and install it.  
+ 
+* System.IdentityModel.Tokens.Jwt:
+    - This package for creating, serializing and validating JSON Web Tokens.
+* Microsoft.AspNet.WebApi.Client
+    - This package adds support for formatting and content negotiation to System.Net.Http. It includes support for JSON, XML, and form URL encoded data.
 
 ### How to use?
 1. Sign up for a new developer account in https://sandbox.taxbandits.com/User/Register
 2. Navigate to **settings** from the left menu and choose **API Credentials**
 3. You can find your Client Id, Client Secret and User Token in the API Credentials page.
 4. Open appsettings.json file and replace with your Client Id, Client Secret and User Token under appsettings tag.
-5. Run the sample  Business application provided for sandbox testing.
-### Packages need to install
-
-To install Packages, right-click on your project in the Solution Explorer window and select “Manage NuGet packages…”. Then, in the NuGet Package Manager window, search for required pacakges and install it.  
- 
-* System.IdentityModel.Tokens.Jwt:
-    - This package for creating, serializing and validating JSON Web Tokens.
-* Microsoft.AspNet.WebApi.Client
-    - This package adds support for formatting and content negotiation to System.Net.Http. It includes support for JSON, XML, and form URL encoded data.
+5. Run the BusinessApiSDK application provided for sandbox testing.
     
-### Project Folder Structure
+### Business Method
+- Create 
+- Get
+- List
+- Update
+
+## Create Business
+For creating business, pass the required data from React Js Application (Frontend) to the Node Js Application(Backend). In Backend, JWT will be generated and passed to the TBS Create Business Endpoint in headers as Authorization. By requesting the TBS Create Business Endpoint, the business will be created and output will be shown in a modal.
+
+**TBS Public API Base URL:** [https://testapi.taxbandits.com/v1.7.1/Business/Create]
+
+## List Business
+For listing business we are passing page, page size, FromDate as params which is taken from env files and ToDate is taken as current date which is also passed as params and JWT token as headers. By passing these values we request to TBS Public API Base URL.
+After requesting list method in business API we'll display the response data as a list.
+
+**TBS Public API Base URL:** [https://testapi.taxbandits.com/v1.7.1/Business/List]
+
+## Update Business
+For updating business we are requesting get business method from Business API and fetch the data against Business ID which is passed as params. After retrieving data we'll update it by requesting TBS Public API Base URL.
+After requesting update method in business API, output will be shown in a modal.
+
+**TBS Public API Base URL:** [https://testapi.taxbandits.com/v1.7.1/Business/Update]
+
+## Get Business
+For getting business we are requesting get business method from Business API and fetch the data against Business ID which is passed as params. After retrieving data, output will be shown in a modal.
+
+**TBS Public API Base URL:** [https://testapi.taxbandits.com/v1.7.1/Business/Update]
+
+
+## Project Folder Structure
 * controllers:
     - The users input data are parsed and request models are constructed here.
     - All API response validations are also done here.
@@ -50,8 +73,6 @@ To install Packages, right-click on your project in the Solution Explorer window
     - Static files can be stored in any folder under the web root and accessed with a relative path to that root.
 * Program.cs:
     - A console file which starts executing from the entry point public static void Main() in Program class where we can create a host for the web application.
-* Startup.cs:
-    - A class file, it is like Global.asax in the traditional .NET application and it is executed first when the application starts.
-    
-### Contact Details
-   Email: developer@taxbandits.com  
+
+
+For more information, please refer: https://developer.taxbandits.com/
