@@ -1,17 +1,33 @@
-# Why Choose TaxBandits API?
+# TaxBandits SDK for .NET
+## Overview
+TaxBandits API enables the automation of Form W-9 & 1099 forms and simplifies the preparation and e-filing of various tax returns with the federal and state. Our developer-friendly API supports the e-filing of 1099-NEC, 1099-MISC, 1099-K, other 1099 forms, W-2, 941, 940, and 1095 forms.
 
-As the experts of 1099, W-2, and various other employment tax filings, TaxBandits API provides various software providers and large enterprises with a reliable solution to ensure tax compliance.
+To check out the complete list of forms we support, [visit here](https://developer.taxbandits.com/#forms).
 
-Built with the highest quality standards, TaxBandits API integration offers an easy and secure way to manage tax preparation and filing. Integrating our API with your software will prove to be a remarkable addition to the clients while expanding your monetization opportunities.
+Jump To
+- [OAuth SDK](https://github.com/TaxBandits/tbs-dotnet-sdk/tree/main/oauth-sdk)
+- [Business SDK](https://github.com/TaxBandits/tbs-dotnet-sdk/tree/main/business-sdk)
+- [TIN Matching Recipient SDK](https://github.com/TaxBandits/tbs-dotnet-sdk/tree/main/tin-matching-recipients-sdk)
 
-# API Overview
+## Getting Started
 
-TaxBandits API supports the e-filing of 1099, W-2, 941, 940, and ACA 1095 forms. Not just with the federal, TaxBandits API also supports the e-filing of W-2 and 1099 forms with the states as well. Also, with our API, you can request W-9s and automate the 1099 filings efficiently.
+### Installing
+Clone the project into your machine
 
-Our developer-friendly API comes with comprehensive documentation that contains clear instructions for every API operation. We offer SDK libraries in major programming languages to make the coding process as simplified as possible. By using webhooks, TaxBandits API can provide the status of tax returns filed with the IRS/SSA.
+```bash
+git clone https://github.com/TaxBandits/tbs-dotnet-sdk.git
+```
 
-For more information visit https://developer.taxbandits.com/docs/intro 
+Visit https://developer.taxbandits.com to get started with TaxBandits API.
 
-# Developer Terms
+## Documentation
 
-By using the TaxBandits SDK, you agree to comply with all applicable laws, as well as our regulations and terms mentioned in https://www.taxbandits.com/terms 
+Visit https://developer.taxbandits.com/docs/intro/ to view the full documentation.
+
+## FAQ
+
+See the [Frequently Asked Questions page](https://developer.taxbandits.com/docs/Faq/General) in the official documentation.
+
+## Developer Terms
+
+By using the TaxBandits SDK, you agree to comply with all applicable laws, as well as our regulations and terms mentioned in https://www.taxbandits.com/terms. 
