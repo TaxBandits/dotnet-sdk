@@ -1,0 +1,128 @@
+﻿@model TinMatchingRecipientsSDK.Models.TinMatchingResponse.TinMatchingListResponse
+@using TinMatchingRecipientsSDK.Models.Utilities
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+
+
+    @if (Model != null && Model.TINMatchingRecords != null)
+    {
+        <div class='d-flex align-items-center justify-content-between mt-5 pt-2'>
+            <div>
+                <h1 class='head-1'>List TIN Matching Recipients</h1>
+                <div class="heading-bottom-line position-relative pb-0  mb-3"></div>
+            </div>
+
+        </div>
+        <table class="table table-striped mt-4 table-bordered text-center">
+            <tbody>
+                <tr>
+                    <th class="text-center">Sequence Id</th>
+                    <th class="text-center">Submission Id</th>
+                    <th class="text-center">Recipient Name</th>
+                    <th class="text-center">Record Id</th>
+                    <th class="text-center">TIN Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+
+                @foreach (var recordList in Model.TINMatchingRecords)
+                {
+                    <tr>
+                        <td style="text-align:left">
+                            @recordList.SequenceId
+                        </td>
+                        <td style="text-align:left">
+                            @recordList.SubmissionId
+                        </td>
+                        <td style="text-align:left">
+                            @recordList.Name
+                        </td>
+                        <td style="text-align:left">
+                            @recordList.RecordId
+                        </td>
+                        <td style="text-align:left">
+                            @recordList.Status
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary status-btn btn_smm me-2 btndisable" onclick="ViewStatus('@recordList.SubmissionId','@recordList.RecordId')">
+                                Get Status
+                            </button>
+
+                            <button type="button" class="btn_cancel btn_smm1 btncanceldisable" onclick="CancelRequest('@recordList.SubmissionId','@recordList.RecordId')">
+                                <i class="fa fa-times" aria-hidden="true"></i>  Cancel
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button type="button" class="btn_cancel  mb-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'" id="btnback">
+            <i class="fa fa-arrow-circle-left"></i>
+            Back
+        </button>
+    }
+    else if (Model != null && Model.Business != null)
+    {
+        <div class="mt-5">
+            <div class="d-flex align-items-center justify-content-center">
+                <p class="mt-2 mb-0 text-center text-danger fw-600">
+                    There are no TIN Match requests for this Business (@Model.Business.BusinessNm).To submit new TIN Match requests, click 'Request TIN Match Button'
+                </p>
+            </div>
+            <div class="text-center mt-4">
+                <button class="btn btn_primary" onclick="location.href='@Url.Action("TinMatchingRequest", "TinMatchingRecipients" ,new{businessId=Model.Business.BusinessId,tin=Model.Business.TIN,businessName=Model.Business.BusinessNm})'"> Request TIN Match</button>
+            </div>
+            <div>
+                <button class="btn_cancel mb-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'"><i class="fa fa-arrow-circle-left"></i> Back   </button>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+
+    function ViewStatus(submissionid, recordid) {
+        $(".btndisable").prop('disabled', true);
+        $.ajax({
+
+            url: "/TinMatchingRecipients/GetTinMtachingStatus/",
+            cache: false,
+            type: 'GET',
+            data: { submissionId: submissionid, recordId: recordid },
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $(".btndisable").prop('disabled', false);
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $(".btndisable").prop('disabled', false);
+            }
+        });
+    }
+
+    function CancelRequest(submissionid, recordid) {
+        $(".btncanceldisable").prop('disabled', true);
+        $.ajax({
+            url: "/TinMatchingRecipients/CancelTinMatching/",
+            cache: false,
+            type: 'GET',
+            data: { submissionId: submissionid, recordId: recordid },
+            success: function (data) {
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $(".modal-close").click(function () {
+                    location.reload();
+                });
+                $(".btncanceldisable").prop('disabled', false);
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $(".btncanceldisable").prop('disabled', false);
+            }
+        });
+    }
+</script>

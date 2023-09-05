@@ -1,0 +1,123 @@
+﻿@model TinMatchingRecipientsSDK.Models.TinMatchingResponse.TinMatchingRecipientsCreateResponse
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalToggleLabel">TIN Matching Response</h5>
+    <button type="button" class="btn-close bg-white rounded-circle border-0 fw-bold position-absolute end-n-10 top-n-13 modal-close button-hide fs-18 fw-500" data-bs-dismiss="modal" aria-label="Close">X</button>
+</div>
+<div class="modal-body">
+    @if (Model != null)
+    {
+        if (Model.Errors != null && Model.Errors.Count > 0)
+        {
+            <h2 class="tabel-sub-head">Error</h2>
+            <div class="table-container mb-3">
+                <table>
+                    <tbody>
+                        <tr class="fw-600 ">
+                            <th class="text-center fw-600">Id</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Message</th>
+
+                        </tr>
+
+                        @foreach (var item in Model.Errors)
+                        {
+                            <tr>
+                                <td class="text-center align-top">@item.Id</td>
+                                <td class="text-center align-top">@item.Name</td>
+                                <td class="text-center border-radious-bottom-right align-top">@item.Message</td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else if (Model.TINMatchingRecords != null)
+        {
+            if (Model.TINMatchingRecords.ErrorRecords != null && Model.TINMatchingRecords.ErrorRecords.Count > 0)
+            {
+                <h2 class="tabel-sub-head">Error Records</h2>
+                <div class="table-container mb-3">
+                    @foreach (var item in Model.TINMatchingRecords.ErrorRecords)
+                    {
+                        <table class="mt-4">
+                            <tbody>
+
+                                @if (item.SequenceId != null)
+                                {
+                                    <tr class="text-center "><td class="fw-600" style="border-bottom:none !important">Sequence Id : @item.SequenceId</td></tr>
+                                }
+                                <tr class="fw-600 mt-3">
+
+                                    <th class="text-center fw-600">Id</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Message</th>
+
+                                </tr>
+
+                                @foreach (var error in item.Errors)
+                                {
+                                    <tr>
+                                        <td class="text-center align-top">@error.Id</td>
+                                        <td class="text-center align-top">@error.Name</td>
+                                        <td class="text-center border-radious-bottom-right align-top">@error.Message</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            }
+            else if (Model.TINMatchingRecords.SuccessRecords != null && Model.TINMatchingRecords.SuccessRecords.Count > 0)
+            {
+                <div class="form-label fw-500 text-muted mb-0">Business Id: </div>
+                <div class=" text-dark fw-500 mb-3">@Model.BusinessId</div>
+                <div class="border border-1 rounded">
+                    <div class="d-flex justify-content-between align-items-center px-3 rounded-top " style="background-color:whitesmoke">
+                        <div class="fs-5 mb-1 fw-bold">Success Records </div>
+
+                        <div class="px-0 me-2">
+                        </div>
+
+                    </div>
+                    <div class="row pb-3 ps-4  ">
+                        <div class="border-bottom row py-3">
+                            <div class="col-6 ps-lg-4">
+                                <div class="form-label fw-500 text-muted mb-0">Submission Id</div>
+                                <div class=" text-dark fw-500">@Model.SubmissionId</div>
+                            </div>
+                        </div>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr className="fw-600 ">
+                                <th className="text-center fw-600" width="30%">Sequence Id</th>
+                                <th className="text-center" width="35%">Record Id</th>
+                                <th className="text-center" width="35%">Status</th>
+                            </tr>
+
+                            @foreach (var item in Model.TINMatchingRecords.SuccessRecords)
+                            {
+                                <tr>
+                                    <td className="text-center align-top">
+                                        @item.SequenceId
+                                    </td>
+                                    <td className="text-center align-top">
+                                        @item.RecordId
+                                    </td>
+                                    <td className="text-center border-radious-bottom-right align-top">
+                                        @item.Status
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    }
+</div>
+
+
+
