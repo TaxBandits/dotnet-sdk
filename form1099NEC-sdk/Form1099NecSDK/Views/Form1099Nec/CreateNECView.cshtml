@@ -1,0 +1,930 @@
+﻿@model Form1099NecSDK.Models.Form1099NEC.Form1099NecCreateRequest
+@using Form1099NecSDK.Models.Utilities
+@using static Form1099NecSDK.Models.Base.EntityBase;
+<head>
+    <link href="~/css/icons-mdi/css/materialdesignicons.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<div class="container">
+    <div class="w-75 m-auto mt-4">
+        <div class="border-1 border rounded-2 pb-4">
+            @if (Model != null && Model.SubmissionManiFest != null)
+            {
+                <h2 class="head-h1 px-12px">
+                    Update Form1099 NEC
+                </h2>
+            }
+            else
+            {
+                <h2 class="head-h1 px-12px">
+                    Create Form1099 NEC
+                </h2>
+            }
+            <div class="px-4">
+                @using (Html.BeginForm("", "", FormMethod.Post, new { id = "NECReturnForm" }))
+                {
+                    <div class="fs-20 text-dark">
+                        <span class=" position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.ReturnHeader.Business.BusinessNm</span> <span class="text-muted fs-14">
+                            @if (Model.ReturnHeader.Business.EINorSSN.Length > 10)
+                            {
+                                <span>(SSN : @Model.ReturnHeader.Business.EINorSSN)</span>
+                            }
+                            else
+                            {
+                                <span>(EIN : @Model.ReturnHeader.Business.EINorSSN)</span>
+                            }
+                    </div>
+                    <div class="col-md-6 mt-3">
+                        <div class="labelName">
+                            <label class="control-label"><span class="text-danger">*</span>Tax Year:</label>
+                            @Html.TextBoxFor(model => model.SubmissionManiFest.TaxYear, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center mb-15px bg-white">
+                        <div class='col mt-3'>
+                            <span class="text-danger">*</span>
+                            @Html.CheckBoxFor(model => model.SubmissionManiFest.IsFederalFilingNullable,new { @class = "css-checkbox me-1 form-check-input cursor-pointer" })<span class="me-3">IsFederalFiling</span>
+                            @Html.CheckBoxFor(model =>  model.SubmissionManiFest.IsStateFilingNullable, new { @class = "css-checkbox me-1 form-check-input cursor-pointer"})<span class="me-3">IsStateFiling</span>
+                            @Html.CheckBoxFor(model => model.SubmissionManiFest.IsPostalNullable, new { @class = "css-checkbox me-1 form-check-input cursor-pointer" })<span class="me-3">IsPostal</span>
+                            @Html.CheckBoxFor(model => model.SubmissionManiFest.IsOnlineAccessNullable, new { @class = "css-checkbox me-1 form-check-input cursor-pointer" })<span class="me-3">IsOnlineAccess</span>
+                        </div>
+                    </div>
+                    for (var i = 0; i < 1; i++)
+                    {
+                        <div class="row">
+                            <h2 class="sub-head text-left mt-4 mb-3 ">
+                                Recipient Details
+                            </h2>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>SequenceId:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].SequenceId, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label"><span class="text-danger">*</span>TIN Type:</label>
+                                    <div class="mt-2">
+                                        <div class="form-check form-check-inline">
+                                            @Html.RadioButtonFor(model => model.ReturnData[i].Recipient.TINType,"EIN",new { @class = "form-check-input" } )
+                                            <label class="form-check-label" for="inlineRadio1">EIN</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            @Html.RadioButtonFor(model => model.ReturnData[i].Recipient.TINType,"SSN",new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="inlineRadio2">SSN</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            @Html.RadioButtonFor(model => model.ReturnData[i].Recipient.TINType,"ATIN",new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="inlineRadio3">ATIN</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            @Html.RadioButtonFor(model => model.ReturnData[i].Recipient.TINType,"ITIN",new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="inlineRadio4">ITIN</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>TIN:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.TIN, new { @class = "form-control"})
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>First Name:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.FirstPayeeNm, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-2">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger"></span>Last Name:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.SecondPayeeNm, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">Email:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.Email, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger"></span>Phone:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.Phone, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger"></span>Fax:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.Fax, new { @class = "form-control"})
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <span>@Html.CheckBoxFor(model => model.ReturnData[i].Recipient.IsForeignNullable, new { onchange = "EnableOrDisableFieldsForRecipients()", @class = "css-checkbox form-check-input", id = "RecipientIsForeign" }) Is Foreign?</span>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Address1:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.USAddress.Address1, new { @id = "RecipientUSAddress1", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.ForeignAddress.Address1, new { @id = "RecipientForeignAddress1", @style = "display:none", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger"></span>Address2:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.USAddress.Address2, new { @id = "RecipientUSAddress2", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.ForeignAddress.Address2, new { @id = "RecipientForeignAddress2", @style = "display:none", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>City:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.USAddress.City, new { @id = "RecipientUsaddressCity", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.ForeignAddress.City, new { @id = "RecipientForeginAddressCity", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="state_lbl_recipient"><span class="text-danger">*</span>State:</label>
+                                        @Html.DropDownListFor(model => model.ReturnData[i].Recipient.USAddress.State, Enum.GetValues(typeof(USStates)).Cast
+                                <USStates>
+                                ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "State", new { @id = "RecipientState",@class = "form-control form-select" })
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.ForeignAddress.ProvinceOrStateNm, new { @id = "RecipientProvinceOrStateNm", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="zip_code_lbl_recipient"><span class="text-danger">*</span>ZipCd:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.USAddress.ZipCd, new { @id = "RecipientZipCd", @class = "form-control"})
+                                        @Html.TextBoxFor(model => model.ReturnData[i].Recipient.ForeignAddress.PostalCd, new { @id = "RecipientPostalCd", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="recipientcountry_lbl" style="display:none;"><span class="text-danger">*</span>Country:</label>
+                                        @Html.DropDownListFor(model => model.ReturnData[i].Recipient.ForeignAddress.Country,Enum.GetValues(typeof(CountryList)).Cast
+                                <CountryList>
+                                ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "Country", new { @id = "recipientcountry", @class = "form-control form-select", @style = "display:none" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex  mb-15px">
+                            </div>
+                        </div>
+                        <h2 class="sub-head text-left mt-4 mb-3 ">Form 1099-NEC Details</h2>
+
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6">
+                                <div class="labelName">
+                                    <label class="control-label"><span class="text-danger">*</span>Nonemployee compensation:</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">$</span>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].NECFormData.B1NEC, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="labelName">
+                                    <label class="control-label">IsDirectSales:</label>
+                                    <div class="d-block">
+                                        @Html.CheckBoxFor(model => model.ReturnData[i].NECFormData.B2IsDirectSales,new{ @class = "form-check-input" })
+                                        Payer made direct sales totaling $5,000 or more of consumer products to recipient for resale
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6">
+                                <div class="labelName">
+                                    <label class="control-label">Federal income tax withheld:</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">$</span>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].NECFormData.B4FedTaxWH, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="labelName">
+                                    <label class="control-label">AccountNum:</label>
+                                    @Html.TextBoxFor(model => model.ReturnData[i].NECFormData.AccountNum, new { @class = "form-control"})
+                                    <div class="mt-2">
+                                        @Html.CheckBoxFor(model => model.ReturnData[i].NECFormData.Is2ndTINnot,new{ @class = "form-check-input" }) 2ndTINnot
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 class="sub-head text-left mt-4 mb-3 ">Form 1099-NEC State Details</h2>
+
+                        @for (int j = 0; j < 2; j++)
+                        {
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">State tax withheld:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].NECFormData.States[j].StateWH, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">State:</label>
+                                        @Html.DropDownListFor(model => model.ReturnData[i].NECFormData.States[j].StateCd, Enum.GetValues(typeof(USStates)).Cast
+                            <USStates>
+                            ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "State", new { @class = "form-control form-select",@id="staterecon"+j,onclick = "StateReconValue()"})
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">Payer's state no:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].NECFormData.States[j].StateIdNum, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">State income:</label>
+                                        @Html.TextBoxFor(model => model.ReturnData[i].NECFormData.States[j].StateIncome, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div id="alstaterecon" style="display:none">
+                            <h3 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">State Recon Data for AL</h3>
+
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">AlabamaWithHoldingID:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.ALWithHoldingID, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">NumberOf1099W2:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.NumOf1099W2, new {  @class = "form-control" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <table class="table table-bordered text-field-table w-100 mx-auto" id="tbl_posts2" style="border-collapse:collapse">
+                                    <thead>
+                                        <tr class="bg-gray">
+                                            <th class="fw-500 text-dark text-center" scope="col">S.NO</th>
+                                            <th class="fw-500 text-dark text-center" scope="col">Month</th>
+                                            <th class="fw-500 text-dark text-center" scope="col">TaxWH</th>
+                                            <th class="fw-500 text-dark position-relative text-center" scope="col">TaxRemitt<div class="form-check form-check-inline p-0 m-0"></div></th>
+
+                                            <th class="fw-500 text-dark text-center" scope="col" width="75px"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dynamic-table">
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a class="btn-rounded-hover add-AlabamaReconList rounded-circle p-2 lh-1">
+                                                    <i class="mdi mdi-plus-circle-outline text-muted fs-4 circleplus" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="Add"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h5 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">PaymentDetails</h5>
+
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">TotTaxRemitt:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.PaymentDetails.TotTaxRemitt, new {  @class = "form-control",@id="tottaxremiit",@onchange="DifofTotRemitandTaxWh()" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">TotTaxWH1099W2:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.PaymentDetails.TotTaxWH1099W2, new {  @class = "form-control" ,@id="tottaxwh" ,@onchange="DifofTotRemitandTaxWh()"})
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">TotTaxDue:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.PaymentDetails.TotTaxDue, new {  @class = "form-control" ,@id="tottaxdue"})
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">TotOverpayment:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.PaymentDetails.TotOverpayment, new {  @class = "form-control",@id="totoverpayment" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">OverPaymentType:</label>
+                                        @Html.DropDownListFor(model => model.StateReconData.AL.FormA3.PaymentDetails.OverPaymentType, Enum.GetValues(typeof(OverPaymentType)).Cast
+                                <OverPaymentType>
+                                ().Select(x => new SelectListItem {Text= (x).ToString(), Value =  (x).ToString()}), "Over PaymentType", new { @class = "form-control form-select"})
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">PaymentMethod:</label>
+                                        @Html.DropDownListFor(model => model.StateReconData.AL.FormA3.PaymentDetails.PaymentMethod, Enum.GetValues(typeof(PaymentMethod)).Cast
+                                <PaymentMethod>
+                                ().Select(x => new SelectListItem {Text= (x).ToString(), Value =  (x).ToString()}), "Payment Method", new { @class = "form-control form-select",onclick="Debitinfo()", id="paymentmethod" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">IsInternationalACHTxn:</label>
+                                        @Html.CheckBoxFor(model => model.StateReconData.AL.FormA3.PaymentDetails.IsInternationalACHTxnNullable, new {  @class = "form-check-input" ,@onclick="IsFundingChk()" ,@id="IsIntAchTxn"})
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+
+                            <div id="etfdebit" style="display:none">
+                                <h5 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">EFTDebitInfo</h5>
+                                <div class="row d-flex justify-content-center mb-15px">
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">BankAccType:</label>
+                                            @Html.DropDownListFor(model => model.StateReconData.AL.FormA3.EFTDebitInfo.BankAccType, Enum.GetValues(typeof(AccountTypes)).Cast
+                                    <AccountTypes>
+                                    ().Select(x => new SelectListItem { Text =  (x).ToString(), Value = (x).ToString() }), "BankAccountType", new {@class = "form-control form-select",@id="debitaccounttypes" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">BankAccNum:</label>
+                                            @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.EFTDebitInfo.BankAccNum, new {  @class = "form-control",@id="debitbankaccnum" })
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-15px">
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">BankRoutingNum:</label>
+                                            @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.EFTDebitInfo.BankRoutingNum, new {  @class = "form-control",@id="bankroutingnum" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">PaymentDate:</label>
+                                            @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.EFTDebitInfo.PaymentDate, "{0:MM/dd/yyyy}", new { @class = "form-control mydatepicker", @id="debitpaymentdate" ,@placeholder = "mm/dd/yyy" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="funding" style="display:none">
+                                <h5 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">FundingSource</h5>
+                                <div class="row d-flex justify-content-center mb-15px">
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">Address:</label>
+                                            @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.FundingSource.Address, new {  @class = "form-control",@id="FundingAddress" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">City:</label>
+                                            @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.FundingSource.City, new {  @class = "form-control",@id="FundingCity" })
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-15px">
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">State:</label>
+                                            @Html.DropDownListFor(model => model.StateReconData.AL.FormA3.FundingSource.State, Enum.GetValues(typeof(USStates)).Cast
+                                    <USStates>
+                                    ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "State", new {@class = "form-control form-select",@id="FundingState" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">Zip:</label>
+                                            @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.FundingSource.Zip, new {  @class = "form-control",@id="FundingZip" })
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-15px">
+                                    <div class="col-md-6">
+                                        <div class="labelName">
+                                            <label class="control-label">ZipExtn:</label>
+                                            @Html.TextBoxFor(model => model.StateReconData.AL.FormA3.FundingSource.ZipExtn, new {  @class = "form-control",@id="FundingZipExtn" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="wvstaterecon" style="display:none">
+                            <h3 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">State Recon Data for WV</h3>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">WithHoldingID:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.WV.FormIT103.WVWithHoldingID, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">NumOf1099W2:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.WV.FormIT103.NumOf1099W2, new {  @class = "form-control" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">TotalTaxWH1099W2:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.WV.FormIT103.TotalTaxWH1099W2, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">WVTaxQ1:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.WV.FormIT103.WHTaxDue.WVTaxQ1, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">WVTaxQ2:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.WV.FormIT103.WHTaxDue.WVTaxQ2, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">WVTaxQ3:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.WV.FormIT103.WHTaxDue.WVTaxQ3, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">WVTaxQ4:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.WV.FormIT103.WHTaxDue.WVTaxQ4, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">TotalForYear:</label>
+                                        @Html.TextBoxFor(model => model.StateReconData.WV.FormIT103.WHTaxDue.TotalForYear, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                        @Html.HiddenFor(x=>x.SubmissionManiFest.SubmissionId)
+                        @Html.HiddenFor(x=>x.ReturnHeader.Business.BusinessId)
+                        @Html.HiddenFor(x=>x.ReturnData[i].RecordId)
+                        @Html.HiddenFor(x=>x.ReturnData[i].Recipient.RecipientId)
+                    }
+                    @if (Model != null && Model.SubmissionManiFest != null)
+                    {
+                        <div class='d-flex align-items-center justify-content-between mt-5 px-5'>
+                            <div>
+                                <button type="button" class="btn_cancel  mb-3 float-left" onclick="location.href='@Url.Action("GetNECList", "Form1099Nec", new { businessId = Model.ReturnHeader.Business.BusinessId})'" id="btnback">
+                                    <i class="fa fa-arrow-circle-left"></i>
+                                    Back
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn_primary shadow btn_md float-right" onclick="UpdateNEC('@Model?.ReturnHeader.Business.BusinessId','@Model?.ReturnHeader.Business.BusinessNm','@Model?.ReturnHeader.Business.EINorSSN')" id="btnupdate">
+                                    Update NEC
+                                    <i class="fa fa-spinner fa-spin" aria-hidden="true" id="CreateSpinner" style="display:none"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class='d-flex align-items-center justify-content-between mt-5 px-5'>
+                            <div>
+                                <button type="button" class="btn_cancel  mb-3 float-left" onclick="location.href='@Url.Action("GetBusinessList", "Business")'" id="btnback">
+                                    <i class="fa fa-arrow-circle-left"></i>
+                                    Back
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn_primary shadow btn_md float-right" onclick="ValidateFormNEC()" id="btnvalidateform">
+                                    ValidateForm
+                                    <i class="fa fa-spinner fa-spin" aria-hidden="true" id="CreateSpinner" style="display:none"></i>
+                                </button>
+                                <button type="button" class="btn btn_primary shadow btn_md float-right" onclick="CreateNEC('@Model?.ReturnHeader.Business.BusinessId','@Model?.ReturnHeader.Business.BusinessNm','@Model?.ReturnHeader.Business.EINorSSN')" id="btnCreate">
+                                    Create NEC
+                                    <i class="fa fa-spinner fa-spin" aria-hidden="true" id="CreateSpinner" style="display:none"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/js/jqueryui/jquery-ui.css" rel="stylesheet" />
+@section Scripts{
+    <script src="~/js/jqueryui/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".mydatepicker")
+                .datepicker({
+                    dateFormat: "mm/dd/yy"
+                })
+        });
+
+    </script>
+}
+
+
+@if (Model != null && Model.ReturnHeader != null)
+{
+
+    <script type="text/javascript">
+        var IncomeTaxWHAndRemittArray = [];
+        window.onload = function () {
+            if ('@Model.ReturnHeader.Business.BusinessId' != null) {
+
+                var recipientcountry = document.getElementById("recipientcountry");
+                recipientcountry.disabled = document.getElementById("RecipientIsForeign").checked ? false : true;
+                ChangeFieldNameForRecipient();
+            }
+        }
+        //DropDownValue Values for Update 
+        var dropdownvalue1 = document.getElementById("staterecon0").value;
+        var dropdownvalue2 = document.getElementById("staterecon1").value;
+        if (dropdownvalue1 == "WV" || dropdownvalue2 == "WV") {
+            document.getElementById('wvstaterecon').style.display = "block";
+        }
+        else {
+            document.getElementById('wvstaterecon').style.display = "none";
+        }
+        if (dropdownvalue1 == "AL" || dropdownvalue2 == "AL") {
+            document.getElementById('alstaterecon').style.display = "block";
+        }
+        else {
+            document.getElementById('alstaterecon').style.display = "none";
+        }
+
+
+        if ('@Model.StateReconData?.AL?.FormA3?.PaymentDetails?.IsInternationalACHTxnNullable' == "True") {
+
+            document.getElementById('funding').style.display = "block";
+
+        }
+
+        if ('@Model.StateReconData?.AL?.FormA3?.PaymentDetails?.PaymentMethod' == "EFT DEBIT") {
+
+            document.getElementById('etfdebit').style.display = "block";
+        }
+
+        if ('@Model.StateReconData?.AL?.FormA3?.IncomeTaxWHAndRemitt.Count' > 0) {
+
+        @if (Model?.StateReconData?.AL?.FormA3?.IncomeTaxWHAndRemitt.Count > 0)
+        {
+            @foreach (var d in Model.StateReconData.AL.FormA3.IncomeTaxWHAndRemitt)
+            {
+                //push the model IncomeTaxWHAndRemitt list values to IncomeTaxWHAndRemittArray
+                @:IncomeTaxWHAndRemittArray.push({ "TaxWH": @d.TaxWH, "TaxRemitt": @d.TaxRemitt, "Month": "@d.Month" });
+            }
+        }
+                                             for (var i = 0; i < IncomeTaxWHAndRemittArray.length; i++) {
+                var j = i + 1;
+                $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + j + '</div></td><td><div class="mt-2 error"><select class="form-control month form-select" id="monthvalue' + i + '"  name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + i + '].Month" placeholder="Month"><option value="">Month</option><option>JAN</option><option>FEB</option><option>MAR</option><option>APR</option><option>MAY</option><option>JUN</option><option>JUL</option><option>AUG</option><option>SEP</option><option>OCT</option><option>NOV</option><option>DEC</option></select></div > </td><td><div class="mt-2 error"><input id="taxwh' + i + '" name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + i + '].TaxWH" type="text" value=' + IncomeTaxWHAndRemittArray[i]["TaxWH"] + '  class="form-control taxwh" placeholder="Tax WH"></div></td><td><div class="mt-2 error"><input id="taxremitt' + i + '" value=' + IncomeTaxWHAndRemittArray[i]["TaxRemitt"] + ' name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + i + '].TaxRemitt"  type="text" placeholder="TaxRemitt" class="form-control taxremitt"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record  rounded-circle p-2 lh-1" ><i class="mdi delete-icon mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+                $("#monthvalue" + i).val(IncomeTaxWHAndRemittArray[i]["Month"]).attr("selected", "selected");
+                if (IncomeTaxWHAndRemittArray.length == 1) {
+                    $(".delete-icon").hide();
+                }
+            }
+        }
+
+    </script>
+}
+<script type="text/javascript">
+    var j = 0;
+    var i = 1;
+    $(document).ready(function () {
+        if ('@Model?.StateReconData?.AL' == null || '@Model?.StateReconData?.AL' == '') {
+            $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><select class="form-control month form-select"  name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + j + '].Month" placeholder="Month"><option value="">Month</option><option>JAN</option><option>FEB</option><option>MAR</option><option>APR</option><option>MAY</option><option>JUN</option><option>JUL</option><option>AUG</option><option>SEP</option><option>OCT</option><option>NOV</option><option>DEC</option></select></div > </td><td><div class="mt-2 error"><input id="taxwh' + j + '" name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + j + '].TaxWH" type="text"   class="form-control taxwh" placeholder="Tax WH"></div></td><td><div class="mt-2 error"><input id="taxremitt' + j + '" name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + j + '].TaxRemitt"  type="text" placeholder="TaxRemitt" class="form-control taxremitt"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+            $('.delete-record').hide();
+            j++;
+            i++;
+        }
+        var once = false;
+
+        //added class to inputs
+        $('a.add-AlabamaReconList').click(function () {
+            if (IncomeTaxWHAndRemittArray.length > 0) {
+                var count = 0;
+                let k = 0;
+                if (once == false) {
+                    for (k; k < IncomeTaxWHAndRemittArray.length; k++) {
+                        count++;
+                    }
+                    i = k + 1;
+                    j = k;
+                    once = true;
+                }
+            }
+
+            if (i == 12) {
+                $('.circleplus').hide();
+            }
+            else {
+                $('.circleplus').show();
+            }
+            $('.delete-record').show();
+            $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><select class="form-control month form-select"  name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + j + '].Month" placeholder="Month"><option value="">Month</option><option>JAN</option><option>FEB</option><option>MAR</option><option>APR</option><option>MAY</option><option>JUN</option><option>JUL</option><option>AUG</option><option>SEP</option><option>OCT</option><option>NOV</option><option>DEC</option></select></div ></td><td><div class="mt-2 error"><input id="taxwh' + j + '" name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + j + '].TaxWH" type="text" class="form-control taxwh" placeholder="Tax WH"></div></td><td><div class="mt-2 error"><input  id="taxremitt' + j + '" name="StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[' + j + '].TaxRemitt" type="text" placeholder="TaxRemitt" class="form-control taxremitt" ></div></td><td class="text-center"><a class="btn-rounded-hover delete-record rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+            j++;
+            i++;
+        });
+
+        $('#dynamic-table').on('click', '.delete-record', function () {
+            $(this).parent().parent().remove();
+            j--; //decremnt count
+            resetValues(); //call to reset values
+        });
+        function resetValues() {
+            counter = 0; //initialze to 1
+            increvalue = 1;
+            //looping through tbody
+            $("#dynamic-table tr").each(function () {
+                $(this).find("td:first").html(increvalue).attr("class", "text-center");
+                $(this).find('.taxremitt').attr("name", "StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[" + counter + "].TaxRemitt");
+                $(this).find('.Month').attr("name", "StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[" + counter + "].Month");
+                $(this).find('.taxwh').attr("name", "StateReconData.AL.FormA3.IncomeTaxWHAndRemitt[" + counter + "].TaxWH").attr("id", "taxwh" + counter + "");
+                counter++; //increment count
+                increvalue++;
+            })
+            if (counter == 1) {
+                $('.delete-record').hide();
+
+            }
+            if (increvalue == 13) {
+                $('.circleplus').hide();
+            }
+            else {
+                $('.circleplus').show();
+            }
+            i = increvalue;
+        }
+    });
+
+    function StateReconValue() {
+        var dropdownvalue1 = document.getElementById("staterecon0").value;
+        var dropdownvalue2 = document.getElementById("staterecon1").value;
+        if (dropdownvalue1 == "WV" || dropdownvalue2 == "WV") {
+            document.getElementById('wvstaterecon').style.display = "block";
+        }
+        else {
+            document.getElementById('wvstaterecon').style.display = "none";
+
+        }
+        if (dropdownvalue1 == "AL" || dropdownvalue2 == "AL") {
+            document.getElementById('alstaterecon').style.display = "block";
+        }
+        else {
+            document.getElementById('alstaterecon').style.display = "none";
+        }
+    }
+
+    function EnableOrDisableFieldsForRecipients() {
+        var recipientcountry = document.getElementById("recipientcountry");
+        recipientcountry.disabled = document.getElementById("RecipientIsForeign").checked ? false : true;
+        ChangeFieldNameForRecipient();
+    }
+
+    function IsFundingChk() {
+        ischeckeds = $("#IsIntAchTxn").is(":checked");
+        if (ischeckeds == true) {
+            document.getElementById('funding').style.display = "block";
+        }
+        else {
+            document.getElementById('funding').style.display = "none";
+            $("#FundingAddress").val(null)
+            $("#FundingCity").val(null)
+            $("#FundingState").val(null)
+            $("#FundingZip").val(null)
+            $("#FundingZipExtn").val(null)
+
+        }
+    }
+
+    function Debitinfo() {
+        var debit = $("#paymentmethod").val();
+        if (debit == "EftDebit") {
+            document.getElementById('etfdebit').style.display = "block";
+        }
+        else {
+            document.getElementById('etfdebit').style.display = "none";
+            $("#debitaccounttypes").val(null)
+            $("#debitbankaccnum").val(null)
+            $("#bankroutingnum").val(null)
+            $("#debitpaymentdate").val(null)
+        }
+    }
+
+
+    function ChangeFieldNameForRecipient() {
+        var UsAddress1 = document.getElementById("RecipientUSAddress1");
+        var USAddress2 = document.getElementById("RecipientUSAddress2");
+        var ForeignAddress1 = document.getElementById("RecipientForeignAddress1");
+        var ForeignAddress2 = document.getElementById("RecipientForeignAddress2");
+        var ForeginAddressCity = document.getElementById("RecipientForeginAddressCity");
+        var zipCodeLbl = document.getElementById("zip_code_lbl_recipient");
+        var zipCodeFld = document.getElementById("RecipientZipCd");
+        var ForeignPostalCde = document.getElementById("RecipientPostalCd");
+        var stateLbl = document.getElementById("state_lbl_recipient");
+        var stateFld = document.getElementById("RecipientProvinceOrStateNm");
+        var USAdressCity = document.getElementById("RecipientUsaddressCity");
+
+        var statedropdown = document.getElementById("RecipientState");
+        var CountryLbl = document.getElementById("recipientcountry_lbl");
+        var CountryFld = document.getElementById("recipientcountry");
+
+        if (document.getElementById("RecipientIsForeign").checked == true) {
+            UsAddress1.style.display = "none";
+            USAddress2.style.display = "none";
+            ForeignAddress1.style.display = "block";
+            ForeignAddress2.style.display = "block";
+            zipCodeLbl.innerHTML = "<span class='text-danger'>*</span>" + "Postal Code";
+            zipCodeFld.style.display = "none";
+            ForeignPostalCde.style.display = "block";
+            stateLbl.innerHTML = "<span class='text-danger'>*</span>" + "ProvinceOrStateNm";
+            statedropdown.style.display = "none";
+            stateFld.style.display = "block";
+            ForeginAddressCity.style.display = "block";
+            CountryLbl.style.display = "block";
+            CountryFld.style.display = "block";
+            USAdressCity.style.display = "none";
+            ForeginAdressCity.style.display = "block";
+
+        } else {
+            UsAddress1.style.display = "block";
+            USAddress2.style.display = "block";
+            ForeignAddress1.style.display = "none";
+            ForeignAddress2.style.display = "none";
+            ForeginAddressCity.style.display = "none";
+            zipCodeLbl.innerHTML = "<span class='text-danger'>*</span>" + "Zip Code";
+            zipCodeFld.style.display = "block";
+            ForeignPostalCde.style.display = "none";
+            stateLbl.innerHTML = "<span class='text-danger'>*</span>" + "State";
+            stateFld.style.display = "none";
+            statedropdown.style.display = "block";
+            CountryLbl.style.display = "none";
+            CountryFld.style.display = "none";
+            USAdressCity.style.display = "block";
+        }
+    }
+
+    function CreateNEC(businessId,businessName,tin) {
+        var formdata = $("#NECReturnForm").serialize();
+        $("#btnCreate > i").show();
+        $("#btnCreate").prop("disabled", true);
+        $.ajax({
+            url: "/Form1099Nec/CreateNEC/",
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $("#btnCreate > i").hide();
+               
+                $("#btnCreate").prop("disabled", false);
+                $(".modal-close").click(function () {
+                        if ($(data).find('.sucesssrecord').length > 0) {
+                        window.location.href = "/Form1099Nec/GetNECList?businessId=" + businessId + "&businessName=" + businessName + "&tin=" + tin;
+
+                    }
+                });
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+            }
+        });
+    }
+
+    function UpdateNEC(businessId, businessName, tin) {
+        var formdata = $("#NECReturnForm").serialize();
+        $("#btnupdate > i").show();
+        $("#btnupdate").prop("disabled", true);
+        $.ajax({
+            url: "/Form1099Nec/UpdateNEC/",
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $("#btnupdate > i").hide();
+                $("#btnupdate").prop("disabled", false);
+                $(".modal-close").click(function () {
+                    if ($(data).find('.sucesssrecord').length > 0) {
+                        window.location.href = "/Form1099Nec/GetNECList?businessId=" + businessId + "&businessName=" + businessName + "&tin=" + tin;
+
+                    }
+                });
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $("#btnupdate > i").hide();
+                $("#btnupdate").prop("disabled", false);
+            }
+        });
+    }
+
+    function ChangeBusinessMemberType(obj) {
+        var selectOption = "<option>BusinessMembersType</option>";
+        if ($(obj).val() != "") {
+            var businessType = $(obj).val();
+            $.getJSON("/Form1099Nec/BusinessMembersType/", { SelectedBusinessTypeVal: businessType }, function (data) {
+                if (data != null && data != '' && data != undefined) {
+                    $("#businessmemeber").html("");
+                    $("#businessmemeber").append(selectOption);
+                    for (var i = 0; i < data.data.length; i++) {
+                        $("#businessmemeber").append($('<option></option>').val(data.data[i].value).html(data.data[i].text));
+                    }
+                }
+            });
+        }
+        else {
+            $("#businessmemeber").html("");
+            $("#businessmemeber").append(selectOption);
+        }
+
+
+    }
+
+    function ValidateFormNEC() {
+        var formdata = $("#NECReturnForm").serialize();
+        $("#btnvalidateform > i").show();
+        $("#btnvalidateform").prop("disabled", true);
+        $.ajax({
+            url: "/Form1099Nec/ValidateForm/",
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $("#btnvalidateform > i").hide();
+                $("#btnvalidateform").prop("disabled", false);
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $("#btnvalidateform > i").hide();
+                $("#btnvalidateform").prop("disabled", false);
+            }
+        });
+    }
+
+</script>
