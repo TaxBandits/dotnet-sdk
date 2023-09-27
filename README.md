@@ -8,7 +8,8 @@ Jump To
 - [OAuth SDK](https://github.com/TaxBandits/tbs-dotnet-sdk/tree/main/oauth-sdk)
 - [Business SDK](https://github.com/TaxBandits/tbs-dotnet-sdk/tree/main/business-sdk)
 - [TIN Matching Recipient SDK](https://github.com/TaxBandits/tbs-dotnet-sdk/tree/main/tin-matching-recipients-sdk)
-
+- [Form 1099 NEC SDK](https://github.com/TaxBandits/tbs-dotnet-sdk/tree/main/form1099NEC-sdk)
+  
 ## Getting Started
 
 ### Installing
