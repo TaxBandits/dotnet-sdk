@@ -23,7 +23,7 @@ Visit https://developer.taxbandits.com to get started with TaxBandits API.
 
 ## Documentation
 
-Visit https://developer.taxbandits.com/docs/intro/ to view the full documentation.
+Visit https://developer.taxbandits.com/docs/Overview to view the full documentation.
 
 ## FAQ
 
