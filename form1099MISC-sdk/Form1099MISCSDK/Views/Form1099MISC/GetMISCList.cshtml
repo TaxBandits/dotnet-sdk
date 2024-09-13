@@ -1,0 +1,283 @@
+﻿@model List<Form1099MISCSDK.Models.Form1099MISCList.Form1099MiscListResponse>
+    @using Form1099MISCSDK.Models.Utilities
+    @{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    <head>
+        <link href="~/css/icons-mdi/css/materialdesignicons.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="container">
+            @if (Model != null && Model.Any(x => x.SubmissionId != null && x.SubmissionId != Guid.Empty))
+            {
+                <div class="fs-20 text-dark mt-5">
+                @if (!string.IsNullOrWhiteSpace(@Model.Select(x => x.BusinessNm).FirstOrDefault()))
+                {
+                     <span class=" position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.Select(x=>x.BusinessNm).FirstOrDefault()</span> <span class="text-muted fs-14"></span>
+                }
+                else
+                {
+                    <span class=" position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.Select(x => x.FirstNm).FirstOrDefault() @Model.Select(x => x.LastNm).FirstOrDefault() @Model.Select(x => x.MiddleNm).FirstOrDefault() @Model.Select(x => x.Suffix).FirstOrDefault()</span> <span class="text-muted fs-14"></span>
+                }
+                   
+                        @if (Model.Select(x => x.EINorSSN).FirstOrDefault().Length > 10)
+                        {
+                            <span>(SSN : @Model.Select(x=>x.EINorSSN).FirstOrDefault())</span>
+                        }
+                        else
+                        {
+                            <span>(EIN : @Model.Select(x=>x.EINorSSN).FirstOrDefault())</span>
+                        }
+                </div>
+                <div class='d-flex align-items-center justify-content-between mt-2 pt-2'>
+                    <div>
+                        <h1 class='head-1'>List Form1099MISC</h1>
+                        <div class="heading-bottom-line position-relative pb-0  mb-3"></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <table class="table table-striped mt-4 table-bordered">
+                        <tr>
+                            <th class="text-center">Submission Id</th>
+                            <th class="text-center">Record Id</th>
+                            <th class="text-center">Recipient Id</th>
+                            <th class="text-center">Recipient Name</th>
+                             <th class="text-center">First Name</th>
+                              <th class="text-center">Last Name</th>
+                        <th class="text-center">Middle Name</th>
+                        <th class="text-center">Suffix</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                        <tbody>
+                            @foreach (var MiscDetails in Model)
+                            {
+                                <tr>
+                                    <td class="text-left">
+                                        @MiscDetails.SubmissionId
+                                    </td>
+                                    <td class="text-left">
+                                        @MiscDetails.Recipient.RecordId
+                                    </td>
+                                    <td class="text-left">
+                                        @MiscDetails.Recipient.RecipientId
+                                    </td>
+                                    <td class="text-left">
+                                        @MiscDetails.Recipient.RecipientNm
+                                    </td>
+                                     <td class="text-left">
+                                        @MiscDetails.Recipient.FirstNm
+                                    </td>
+                                     <td class="text-left">
+                                        @MiscDetails.Recipient.LastNm
+                                    </td>
+                                     <td class="text-left">
+                                        @MiscDetails.Recipient.MiddleNm
+                                    </td>
+                                <td class="text-left">
+                                    @MiscDetails.Recipient.Suffix
+                                </td>
+                                    <td class="text-center">
+                                        <div class="dropdown action d-md-flex justify-content-between align-items-center px-4">
+                                            <a class="btn btn-primary status-btn btn_smm"
+                                               onclick="location.href='@Url.Action("GetMISCDetail", "Form1099MISC", new { submissionId = MiscDetails.SubmissionId, recordId=MiscDetails.Recipient.RecordId})'">
+                                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 576 512" height="1em"
+                                                     width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z">
+                                                    </path>
+                                                </svg>
+                                            </a><button type="button" class="btn-rounded-hover rounded-circle p-2 lh-1 border-0"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="mdi mdi-dots-vertical text-muted fs-4"></i>
+                                            </button>
+                                            <ul class="dropdown-menu h-100px">
+                                                <li><button class="dropdown-item text-dark" onclick="ViewStatus('@MiscDetails.SubmissionId','@MiscDetails.Recipient.RecordId')">View Status</button></li>
+                                                <li><button class="dropdown-item text-dark" onclick="DraftPdfUrl('@MiscDetails.Recipient.RecordId')">Request Draft Pdf Url</button></li>
+                                                <li><button class="dropdown-item text-dark" onclick="RequestPdfUrls('@MiscDetails.SubmissionId','@MiscDetails.Recipient.RecordId')">Request Pdf Url</button></li>
+                                                <li><button class="dropdown-item text-dark" onclick="Transmit('@MiscDetails.SubmissionId','@MiscDetails.Recipient.RecordId')">Transmit</button></li>
+                                                <li><button class="dropdown-item text-dark" onclick="DeleteRecord('@MiscDetails.SubmissionId','@MiscDetails.Recipient.RecordId')">Delete</button></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div>
+                        <button class="btn_cancel mb-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'">
+                            <i class="fa fa-arrow-circle-left"></i>
+                            Back
+                        </button>
+                    </div>
+                </div>
+            }
+            else if (Model != null && @Model.Any(x => x.BusinessId != Guid.Empty && x.BusinessId != null))
+            {
+                <div class="mt-5">
+                    <div class="d-flex align-items-center justify-content-center">
+                    @if (!string.IsNullOrWhiteSpace(@Model.Select(x => x.BusinessNm).FirstOrDefault()))
+                    {
+                        <p class="mt-2 mb-0 text-center text-danger fw-600">
+                            There are no 1099-MISC forms created under the business (@Model.Select(x => x.BusinessNm).FirstOrDefault()). Click "Create Form1099MISC" to create a new Form 1099-MISC.
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="mt-2 mb-0 text-center text-danger fw-600">
+                            There are no 1099-MISC forms created under the business (@Model.Select(x => x.FirstNm).FirstOrDefault() @Model.Select(x => x.LastNm).FirstOrDefault() @Model.Select(x => x.MiddleNm).FirstOrDefault() @Model.Select(x => x.Suffix).FirstOrDefault()). Click "Create Form1099MISC" to create a new Form 1099-MISC.
+                        </p>
+                    }
+
+                    </div>
+                    <div class="text-center mt-4">
+                    <button class="btn btn_primary" onclick="location.href='@Url.Action("CreateMISCView", "Form1099MISC" ,new{businessId=Model.Select(x=>x.BusinessId).FirstOrDefault(),businessName=Model.Select(x=>x.BusinessNm).FirstOrDefault(), firstName = @Model.Select(x => x.FirstNm).FirstOrDefault(), lastName = @Model.Select(x => x.LastNm).FirstOrDefault(), middleName = @Model.Select(x => x.MiddleNm).FirstOrDefault(), suffix = @Model.Select(x => x.Suffix).FirstOrDefault(), tin=Model.Select(x=>x.EINorSSN).FirstOrDefault()})'"> Create Form1099MISC</button>
+                    </div>
+                    <div>
+                        <button class="btn_cancel shadow mb-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'"><i class="fa fa-arrow-circle-left"></i> Back   </button>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="spinner-border" role="status" style="display:none">
+            <span class="sr-only">Loading...</span>
+        </div>
+    <div class="offcanvas offcanvas-end w-50 modal-xl modal-md modal-dialog-scrollable m-0 h-100 ms-auto" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header  rounded-0 border-0 bg-secondary">
+            <h5 id="offcanvasRightLabel" class="modal-title">Request PDF Url Response</h5>
+            <button type="button" class="btn-close text-reset bg-white rounded-circle border-0 fw-bold position-absolute end-n-10 top-n-13 modal-close button-hide fs-18 fw-500" style="top: auto;" data-bs-dismiss="offcanvas" aria-label="Close"> X</button>
+        </div>
+        <div id="canvas">
+        </div>
+    </div>
+    </body>
+    <script>
+        function ViewStatus(submissionId, recordId) {
+            $(".spinner-border").show();
+            $.ajax({
+
+                url: "/Form1099MISC/GetMISCStatus/",
+                cache: false,
+                type: 'GET',
+                data: { submissionId: submissionId, recordId: recordId },
+                success: function (data) {
+                    $(".modal-dialog").addClass("edit-dialog");
+                    $('#ModelBody').html(data);
+                    $('#myModal').modal("show");
+                    $(".spinner-border").hide();
+                },
+                error: function (err) {
+                    console.log(err.responseText);
+                    $(".spinner-border").hide();
+                }
+            });
+        }
+        function DeleteRecord(submissionId, recordId) {
+            $(".spinner-border").show();
+            var checkstr = confirm('Are you sure you want to delete the record?');
+            if (checkstr == true) {
+                $.ajax({
+
+                    url: "/Form1099MISC/Delete/",
+                    cache: false,
+                    type: 'GET',
+                    data: { submissionId: submissionId, recordId: recordId },
+                    success: function (data) {
+                        $(".modal-dialog").addClass("edit-dialog");
+                        $('#ModelBody').html(data);
+                        $('#myModal').modal("show");
+                        $(".modal-close").click(function () {
+                            location.reload();
+                        });
+                        $(".spinner-border").hide();
+                    },
+                    error: function (err) {
+                        console.log(err.responseText);
+                        $(".spinner-border").hide();
+                    }
+                });
+            }
+            else {
+                $(".spinner-border").hide();
+                return false;
+
+            }
+        }
+        function DraftPdfUrl(recordId) {
+            $(".spinner-border").show();
+            $.ajax({
+
+                url: "/Form1099MISC/RequestDraftPdfUrl/",
+                cache: false,
+                type: 'GET',
+                data: { recordId: recordId },
+                success: function (data) {
+                    $(".modal-dialog").addClass("edit-dialog");
+                    $('#ModelBody').html(data);
+                    $('#myModal').modal("show");
+                    $(".spinner-border").hide();
+                },
+                error: function (err) {
+                    console.log(err.responseText);
+                    $(".spinner-border").hide();
+                }
+            });
+        }
+
+        function RequestPdfUrls(submissionId, recordId) {
+
+            $(".spinner-border").show();
+            $.ajax({
+
+                url: "/Form1099MISC/RequestPdfUrl/",
+                cache: false,
+                type: 'GET',
+                data: { submissionId: submissionId, recordId: recordId },
+                success: function (data) {
+                if ($(data).filter(".offcanvas-body").length > 0) {
+
+                    $('#canvas').html(data);
+                    var rightOffcanvas = document.getElementById('offcanvasRight')
+                    var bsOffcanvas = new bootstrap.Offcanvas(rightOffcanvas)
+                    bsOffcanvas.show()
+                    $(".spinner-border").hide();
+                }
+                else {
+                    $(".modal-dialog").addClass("edit-dialog");
+                    $('#ModelBody').html(data);
+                    $('#myModal').modal("show");
+                    $(".spinner-border").hide();
+                }
+
+
+                    $(".spinner-border").hide();
+                },
+                error: function (err) {
+                    console.log(err.responseText);
+                    $(".spinner-border").hide();
+                }
+            });
+        }
+        function Transmit(submissionId, recordId) {
+            $(".spinner-border").show();
+            $.ajax({
+
+                url: "/Form1099MISC/Transmit/",
+                cache: false,
+                type: 'GET',
+                data: { submissionId: submissionId, recordId: recordId },
+                success: function (data) {
+                    $(".modal-dialog").addClass("edit-dialog");
+                    $('#ModelBody').html(data);
+                    $('#myModal').modal("show");
+                    $(".spinner-border").hide();
+                },
+                error: function (err) {
+                    console.log(err.responseText);
+                    $(".spinner-border").hide();
+                }
+            });
+        }
+    </script>
