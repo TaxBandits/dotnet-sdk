@@ -32,7 +32,6 @@ a {
 }
 
 
-
 /*p, ul {
 	line-height: 1.6em;
 }*/
@@ -54,6 +53,7 @@ img {
     background: #fb7310;
     border: 1px solid #da6610;
 }
+
 .btn_primary {
     background: #F26D21 !important;
 }
@@ -142,10 +142,6 @@ img {
     width: 1000px !important;
 }
 
-
-
-
-
 .modal-header {
     border-bottom: 1px solid #c7c7c7;
     border-radius: 6px 6px 0 0;
@@ -213,7 +209,6 @@ h2.head-h1 {
     border: 1px solid #fb7310 !important;
     color: white !important;
     transition: unset !important;
-
 }
 
 .form-control:focus {
@@ -290,6 +285,7 @@ table tr td {
     border: 0;
     background: transparent;
 }
+
 .modal-close {
     width: 20px;
     height: 20px;
@@ -359,8 +355,6 @@ img.top-eye-icon {
     background-color: #00000005 !important; /* Set background color for even rows */
 }
 
-
-
 h2.card-head {
     font-size: 24px;
 }
@@ -373,13 +367,16 @@ button.btn_cancel {
     padding: 1px 10px;
     border-radius: 4px;
 }
+
     button.btn_cancel:hover {
         background-color: #e6e6e6 !important;
     }
+
 .btn_cancel.btn_smm1 {
     padding: 3px 10px !important;
     font-size: 10px !important;
 }
+
 .head-1 {
     font-size: 24px;
     font-weight: 600;
@@ -389,9 +386,11 @@ button.btn_cancel {
     padding: 3px 10px !important;
     font-size: 10px !important;
 }
+
 header {
     box-shadow: 0 0px 6px #adadad;
 }
+
 .heading-bottom-line::after, .heading-bottom-line::before {
     content: "";
     display: inline-block;
@@ -413,6 +412,7 @@ header {
     background: #242424;
     left: 4.688rem;
 }
+
 .btn-rounded-hover:hover {
     background-color: #E2E2E2;
 }

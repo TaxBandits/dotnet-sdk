@@ -9,16 +9,15 @@ using TinMatchingRecipientsSDK.Models.Utilities;
 
 namespace TinMatchingRecipientsSDK.Controllers
 {
-    public class TinMatchingRecipientsController : Controller
+   public class TinMatchingRecipientsController : Controller
     {
-
         #region TIN Matching Request View
         [HttpGet]
-        public ActionResult TinMatchingRequest(Guid? businessId, string tin, string businessName)
+        public ActionResult TinMatchingRequest(Guid? businessId, string tin, string businessName, string firstName, string lastName, string middleName, string suffix)
         {
-            if (businessId != Guid.Empty && businessId != null && !string.IsNullOrWhiteSpace(tin) && !string.IsNullOrWhiteSpace(businessName))
+            if (businessId != Guid.Empty && businessId != null && !string.IsNullOrWhiteSpace(tin) && ((!string.IsNullOrWhiteSpace(businessName)) || ((!string.IsNullOrWhiteSpace(firstName)) || (!string.IsNullOrWhiteSpace(lastName)) || (!string.IsNullOrWhiteSpace(middleName)) || (!string.IsNullOrWhiteSpace(suffix)))) )
             {
-                TinMatchingRecipientsCreateRequest tinMatchingRequest = new TinMatchingRecipientsCreateRequest { TINMatchingDetails = new TINMatchingCreateRecipient { Business = new TINMatchingBusiness { BusinessId = businessId, TIN = tin, BusinessNm = businessName } } };
+                TinMatchingRecipientsCreateRequest tinMatchingRequest = new TinMatchingRecipientsCreateRequest { TINMatchingDetails = new TINMatchingCreateRecipient { Business = new TINMatchingBusiness { BusinessId = businessId, TIN = tin, BusinessNm = businessName, FirstNm = firstName, LastNm = lastName, MiddleNm = middleName, Suffix = suffix } } };
 
                 return View(tinMatchingRequest);
             }
@@ -28,7 +27,6 @@ namespace TinMatchingRecipientsSDK.Controllers
         #endregion
 
         #region TIN Matching Request for Recipients
-
         [HttpPost]
         public ActionResult TinMatchingRequest(TinMatchingRecipientsCreateRequest tinMatchingRequest)
         {
@@ -80,7 +78,7 @@ namespace TinMatchingRecipientsSDK.Controllers
 
         #region TIN Matching List for Recipients
         [HttpGet]
-        public ActionResult TinMatchingList(string businessId, string tin, string businessName)
+        public ActionResult TinMatchingList(Guid? businessId, string tin, string businessName, string firstName,string lastName,string middleName,string suffix)
         {
             var tinMatchingListResponse = new TinMatchingListResponse();
             var listResponseJSON = string.Empty;
@@ -118,7 +116,7 @@ namespace TinMatchingRecipientsSDK.Controllers
                     }
                     else
                     {
-                        var listResponse = _response?.Content.ReadAsAsync<Object>().Result;
+                        var listResponse = _response.Content.ReadAsAsync<Object>().Result;
                         listResponseJSON = JsonConvert.SerializeObject(listResponse, Formatting.Indented);
 
                         //Deserializing JSON (Error Response) to tinMatchingResponse object
@@ -127,6 +125,10 @@ namespace TinMatchingRecipientsSDK.Controllers
                         tinMatchingListResponse.Business.BusinessId = Utility.GetGuid(businessId);
                         tinMatchingListResponse.Business.TIN = tin;
                         tinMatchingListResponse.Business.BusinessNm = businessName;
+                        tinMatchingListResponse.Business.FirstNm = firstName;
+                        tinMatchingListResponse.Business.LastNm = lastName;
+                        tinMatchingListResponse.Business.MiddleNm = middleName;
+                        tinMatchingListResponse.Business.Suffix = suffix;
 
                     }
                 }
@@ -138,7 +140,7 @@ namespace TinMatchingRecipientsSDK.Controllers
 
         #region Get TinMatching Status 
         [HttpGet]
-        public IActionResult GetTinMtachingStatus(string tinType, string tin)
+        public IActionResult GetTinMtachingStatus(Guid submissionId, Guid recordId)
         {
             var statusResponse = new TinMatchingGetStatusResponse();
             var statusResponseJSON = string.Empty;
@@ -151,8 +153,8 @@ namespace TinMatchingRecipientsSDK.Controllers
             {
                 using (var apiClient = new HttpClient())
                 {
-                    //API URL to Get Status using TINType and TIN 
-                    string requestUrl = Constants.TINMATCHING_STATUS_URL + "?RecipientTINType=" + tinType + "&RecipientTIN=" + tin;
+                    //API URL to Get Status using SubmissionId and RecordId 
+                    string requestUrl = Constants.TINMATCHING_STATUS_URL + "?SubmissionId=" + submissionId + "&RecordId=" + recordId;
                     //Get URLs from App.Config
                     apiClient.BaseAddress = new Uri(Utility.GetAppSettings(Constants.TBS_PUBLIC_API_BASE_URL));
                     //Construct HTTP headers
@@ -169,18 +171,16 @@ namespace TinMatchingRecipientsSDK.Controllers
                             statusResponseJSON = JsonConvert.SerializeObject(getResponse, Formatting.Indented);
                             //Deserializing JSON (Success Response) to statusResponse object
                             statusResponse = JsonConvert.DeserializeObject<TinMatchingGetStatusResponse>(statusResponseJSON);
-
                         }
                     }
                     else
                     {
                         //Read Response from API
-                        var getResponse = _response?.Content.ReadAsAsync<Object>().Result;
+                        var getResponse = _response.Content.ReadAsAsync<Object>().Result;
                         statusResponseJSON = JsonConvert.SerializeObject(getResponse, Formatting.Indented);
                         //Deserializing JSON (Success Response) to statusResponse object
                         statusResponse = JsonConvert.DeserializeObject<TinMatchingGetStatusResponse>(statusResponseJSON);
                     }
-
                 }
             }
 
@@ -190,7 +190,7 @@ namespace TinMatchingRecipientsSDK.Controllers
 
         #region Cancel TinMatching  
         [HttpGet]
-        public IActionResult CancelTinMatching(string submissionId, string recordId)
+        public IActionResult CancelTinMatching(Guid submissionId, Guid recordId)
         {
             var cancelResponse = new TinMatchingCancelResponse();
             var cancelResponseJSON = string.Empty;
@@ -216,10 +216,10 @@ namespace TinMatchingRecipientsSDK.Controllers
                     if (_response != null && _response.IsSuccessStatusCode)
                     {
                         //Read Response from API
-                        var getResponse = _response.Content.ReadAsAsync<TinMatchingCancelResponse>().Result;
-                        if (getResponse != null)
+                        var tinMtachingCancelResponse = _response.Content.ReadAsAsync<TinMatchingCancelResponse>().Result;
+                        if (tinMtachingCancelResponse != null)
                         {
-                            cancelResponseJSON = JsonConvert.SerializeObject(getResponse, Formatting.Indented);
+                            cancelResponseJSON = JsonConvert.SerializeObject(tinMtachingCancelResponse, Formatting.Indented);
                             //Deserializing JSON (Success Response) to cancelResponse object
                             cancelResponse = JsonConvert.DeserializeObject<TinMatchingCancelResponse>(cancelResponseJSON);
                         }
@@ -227,8 +227,8 @@ namespace TinMatchingRecipientsSDK.Controllers
                     else
                     {
                         //Read Response from API
-                        var getResponse = _response?.Content.ReadAsAsync<Object>().Result;
-                        cancelResponseJSON = JsonConvert.SerializeObject(getResponse, Formatting.Indented);
+                        var tinMtachingCancelResponse = _response.Content.ReadAsAsync<Object>().Result;
+                        cancelResponseJSON = JsonConvert.SerializeObject(tinMtachingCancelResponse, Formatting.Indented);
                         //Deserializing JSON (Success Response) to cancelResponse object
                         cancelResponse = JsonConvert.DeserializeObject<TinMatchingCancelResponse>(cancelResponseJSON);
                     }

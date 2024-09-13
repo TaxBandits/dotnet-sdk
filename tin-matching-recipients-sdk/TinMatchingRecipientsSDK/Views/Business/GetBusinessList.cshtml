@@ -19,18 +19,21 @@
         </div>
 
         <table class="table table-striped mt-4 table-bordered text-center">
-
             <tr>
                 <th class="text-center">Business Id</th>
                 <th class="text-center">Business Name</th>
+                <th class="text-center">First Name</th>
+                <th class="text-center">Last Name</th>
+                <th class="text-center">Middle Name</th>
+                <th class="text-center">Suffix</th>
                 <th class="text-center">Email</th>
                 <th class="text-center">Action</th>
             </tr>
 
             <tbody>
+
                 @foreach (var BizDetails in Model)
                 {
-
                     <tr>
                         <td style="text-align:left">
                             @BizDetails.BusinessId
@@ -38,24 +41,35 @@
                         <td style="text-align:left">
                             @BizDetails.BusinessNm
                         </td>
+                         <td style="text-align:left">
+                            @BizDetails.FirstNm
+                        </td>
+                         <td style="text-align:left">
+                            @BizDetails.LastNm
+                        </td>
+                        <td style="text-align:left">
+                            @BizDetails.MiddleNm
+                        </td>
+                        <td style="text-align:left">
+                            @BizDetails.Suffix
+                        </td>
                         <td style="text-align:left">
                             @BizDetails.Email
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary status-btn btn_smm me-2" onclick="location.href='@Url.Action("TinMatchingRequest", "TinMatchingRecipients", new { businessId = BizDetails.BusinessId, tin = BizDetails.EINorSSN,tinType=BizDetails.IsEIN,businessName=BizDetails.BusinessNm})'">
+                            <button type="button" class="btn btn-primary status-btn btn_smm me-2" onclick="location.href='@Url.Action("TinMatchingRequest", "TinMatchingRecipients", new { businessId = BizDetails.BusinessId, tin = BizDetails.EINorSSN,tinType=BizDetails.IsEIN,businessName=BizDetails.BusinessNm, firstName = BizDetails.FirstNm, lastName = BizDetails.LastNm, middleName = BizDetails.MiddleNm, suffix = BizDetails.Suffix})'">
                                 Request TIN Match
                             </button>
-                            <button type="button" class="btn btn-primary status-btn btn_smm me-2" onclick="location.href='@Url.Action("TinMatchingList", "TinMatchingRecipients", new { businessId = BizDetails.BusinessId, tin = BizDetails.EINorSSN,tinType=BizDetails.IsEIN,businessName=BizDetails.BusinessNm})'">
+                            <button type="button" class="btn btn-primary status-btn btn_smm me-2" onclick="location.href='@Url.Action("TinMatchingList", "TinMatchingRecipients", new { businessId = BizDetails.BusinessId, tin = BizDetails.EINorSSN,tinType=BizDetails.IsEIN,businessName=BizDetails.BusinessNm, firstName = BizDetails.FirstNm, lastName = BizDetails.LastNm, middleName = BizDetails.MiddleNm, suffix = BizDetails.Suffix})'">
                                 List
                             </button>
-
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
 
-        <button class="btn_cancel shadow mb-3" onclick="location.href='@Url.Action("Index", "Home")'" id="btnback">
+        <button class="btn_cancel mb-3" onclick="location.href='@Url.Action("Index", "Home")'">
             <i class="fa fa-arrow-circle-left"></i>
             Back
         </button>
@@ -73,7 +87,7 @@
                 <button class="btn btn_primary shadow btn_md" onclick="location.href='@Url.Action("CreateBusiness", "Business")'"> Create Business</button>
             </div>
             <div>
-                <button class="btn_cancel shadow mb-3" onclick="location.href='@Url.Action("Index", "Home")'"><i class="fa fa-arrow-circle-left"></i> Back   </button>
+                <button class="btn_cancel mb-3" onclick="location.href='@Url.Action("Index", "Home")'"><i class="fa fa-arrow-circle-left"></i> Back   </button>
             </div>
         </div>
     }
