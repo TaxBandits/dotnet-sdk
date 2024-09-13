@@ -71,15 +71,11 @@ namespace BusinessApiSDK.Models.Utilities
                         jwt = oauthApiResponse.AccessToken;
                         //Set the JWT value in session variable 
                         Session.SetString("sessionToken", jwt);
-
                     }
                 }
-
                 return jwt;
             }
-
         }
-
         #endregion
 
         #region Checking JWT Expired Or Not
@@ -107,7 +103,6 @@ namespace BusinessApiSDK.Models.Utilities
 
         }
         #endregion
-
 
     }
 }

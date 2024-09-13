@@ -3,8 +3,6 @@
 namespace BusinessApiSDK.Models.Business
 {
     public class BusinessCreateRequest:Business
-    {
-        
-
+    {     
     }
 }
