@@ -1,0 +1,257 @@
+﻿@model List<Form941SDK.Models.Form941List.Form941ListResponse>
+@using Form941SDK.Models.Utilities
+
+<head>
+    <link href="~/css/icons-mdi/css/materialdesignicons.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+ 
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        @if (Model != null && Model.Any(x => x.SubmissionId != null && x.SubmissionId != Guid.Empty))
+        {
+            <div class="fs-20 text-dark mt-5">
+                @if (!string.IsNullOrWhiteSpace(@Model.Select(x => x.BusinessNm).FirstOrDefault()))
+                {
+                    <span class=" position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.Select(x => x.BusinessNm).FirstOrDefault()</span> <span class="text-muted fs-14"></span>
+                }
+                else
+                {
+                    <span class=" position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.Select(x => x.FirstNm).FirstOrDefault() @Model.Select(x => x.LastNm).FirstOrDefault() @Model.Select(x => x.MiddleNm).FirstOrDefault() @Model.Select(x => x.Suffix).FirstOrDefault()</span> <span class="text-muted fs-14"></span>
+                }
+                
+                    @if (Model.Select(x => x.EIN).FirstOrDefault().Length > 10)
+                    {
+                        <span>(SSN : @Model.Select(x=>x.EIN).FirstOrDefault())</span>
+                    }
+                    else
+                    {
+                        <span>(EIN : @Model.Select(x=>x.EIN).FirstOrDefault())</span>
+                    }
+            </div>
+            <div class='d-flex align-items-center justify-content-between mt-2 pt-2'>
+                <div>
+                    <h1 class='head-1'>Form 941s</h1>
+                    <div class="heading-bottom-line position-relative pb-0  mb-3"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <table class="table table-striped mt-4 table-bordered">
+                    <tr>
+                        <th class="text-center">Submission Id</th>
+                        <th class="text-center">Record Id</th>
+                        <th class="text-center">Quarter</th>
+                        <th class="text-center">IRS Payment Type</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    <tbody>
+                        @foreach (var form941Details in Model)
+                        {
+                            <tr>
+                                <td class="text-left">
+                                    @form941Details.SubmissionId
+                                </td>
+                                <td class="text-left">
+                                    @form941Details.RecordId
+                                </td>
+                                <td class="text-left">
+                                    @if(form941Details.Qtr!=null)
+                                    {
+                                    @form941Details.Qtr
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                    
+                                </td>
+                                <td class="text-left">
+                                    @if(form941Details.IRSPaymentType!=null)
+                                    {
+                                    @form941Details.IRSPaymentType
+                                    }
+                                    else
+                                    {
+                                    <span>-</span>
+                                    }
+                                    
+                                </td>
+                                <td class="text-center">
+                                    <div class="dropdown action d-md-flex justify-content-between align-items-center px-4">
+                                        <a class="btn btn-primary status-btn btn_smm"
+                                           onclick="location.href='@Url.Action("Get941Detail", "Form941", new { submissionId = form941Details.SubmissionId, recordId=form941Details.RecordId})'">
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 576 512" height="1em"
+                                                 width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z">
+                                                </path>
+                                            </svg>
+                                        </a><button type="button" class="btn-rounded-hover rounded-circle p-2 lh-1 border-0"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical text-muted fs-4"></i>
+                                        </button>
+                                        <ul class="dropdown-menu " style="height: 170px">
+                                            <li><button class="dropdown-item text-dark" onclick="ViewStatus('@form941Details.SubmissionId','@form941Details.RecordId')">View Status</button></li>
+                                            <li><button class="dropdown-item text-dark" onclick="GetPdf('@form941Details.SubmissionId','@form941Details.RecordId')">Get Pdf</button></li>
+                                            <li><button class="dropdown-item text-dark" onclick="Transmit('@form941Details.SubmissionId','@form941Details.RecordId')">Transmit</button></li>
+                                            <li><button class="dropdown-item text-dark" onclick="DeleteRecord('@form941Details.SubmissionId','@form941Details.RecordId')">Delete</button></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    <button class="btn_cancel mb-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'">
+                        <i class="fa fa-arrow-circle-left"></i>
+                        Back
+                    </button>
+                </div>
+            </div>
+        }
+        else if (Model != null && @Model.Any(x => x.BusinessId != Guid.Empty && x.BusinessId != null))
+        {
+            <div class="mt-5">
+                <div class="d-flex align-items-center justify-content-center">
+                    @if (!string.IsNullOrWhiteSpace(@Model.Select(x => x.BusinessNm).FirstOrDefault()))
+                    {
+                        <p class="mt-2 mb-0 text-center text-danger fw-600">
+                            There are no 941 forms created under the business (@Model.Select(x => x.BusinessNm).FirstOrDefault()). Click "Create Form941" to create a new Form 941.
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="mt-2 mb-0 text-center text-danger fw-600">
+                            There are no 941 forms created under the business (@Model.Select(x => x.FirstNm).FirstOrDefault() @Model.Select(x => x.LastNm).FirstOrDefault() @Model.Select(x => x.MiddleNm).FirstOrDefault() @Model.Select(x => x.Suffix).FirstOrDefault()). Click "Create Form941" to create a new Form 941.
+                        </p>
+                    }
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn_primary" onclick="location.href='@Url.Action("CreateForm941View", "Form941" ,new{businessId=Model.Select(x=>x.BusinessId).FirstOrDefault(),businessName=Model.Select(x=>x.BusinessNm).FirstOrDefault(),firstName = @Model.Select(x => x.FirstNm).FirstOrDefault(), lastName = @Model.Select(x => x.LastNm).FirstOrDefault(), middleName = @Model.Select(x => x.MiddleNm).FirstOrDefault(), suffix = @Model.Select(x => x.Suffix).FirstOrDefault() ,tin=Model.Select(x=>x.EIN).FirstOrDefault()})'"> Create Form941</button>
+                </div>
+                <div>
+                    <button class="btn_cancel shadow mb-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'"><i class="fa fa-arrow-circle-left"></i> Back   </button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="spinner-border" role="status" style="display:none">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="offcanvas offcanvas-end w-50 modal-xl modal-md modal-dialog-scrollable m-0 h-100 ms-auto" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header  rounded-0 border-0 bg-secondary">
+            <h5 id="offcanvasRightLabel" class="modal-title">Request PDF Url Response</h5>
+            <button type="button" class="btn-close text-reset bg-white rounded-circle border-0 fw-bold position-absolute end-n-10 top-n-13 modal-close button-hide fs-18 fw-500" style="top: auto;" data-bs-dismiss="offcanvas" aria-label="Close"> X</button>
+        </div>
+        <div id="canvas">
+        </div>
+    </div>
+
+
+</body>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function ViewStatus(submissionId, recordId) {
+        $(".spinner-border").show();
+        $.ajax({
+
+            url: "/Form941/GetStatus/",
+            cache: false,
+            type: 'GET',
+            data: { submissionId: submissionId, recordId: recordId },
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $(".spinner-border").hide();
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $(".spinner-border").hide();
+            }
+        });
+    }
+
+    function DeleteRecord(submissionId, recordId) {
+        $(".spinner-border").show();
+        var checkstr = confirm('Are you sure you want to delete the record?');
+        if (checkstr == true) {
+            $.ajax({
+
+                url: "/Form941/Delete/",
+                cache: false,
+                type: 'GET',
+                data: { submissionId: submissionId, recordId: recordId },
+                success: function (data) {
+                    $(".modal-dialog").addClass("edit-dialog");
+                    $('#ModelBody').html(data);
+                    $('#myModal').modal("show");
+                    $(".modal-close").click(function () {
+                        location.reload();
+                    });
+                    $(".spinner-border").hide();
+                },
+                error: function (err) {
+                    console.log(err.responseText);
+                    $(".spinner-border").hide();
+                }
+            });
+        }
+        else {
+            $(".spinner-border").hide();
+            return false;
+
+        }
+    }
+
+    function GetPdf(submissionId, recordId) {
+
+
+        $(".spinner-border").show();
+        $.ajax({
+
+            url: "/Form941/GetPdf/",
+            cache: false,
+            type: 'GET',
+            data: { submissionId: submissionId, recordId: recordId },
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $(".spinner-border").hide();
+
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $(".spinner-border").hide();
+            }
+        });
+    }
+
+    function Transmit(submissionId, recordId) {
+        $(".spinner-border").show();
+        $.ajax({
+
+            url: "/Form941/Transmit/",
+            cache: false,
+            type: 'GET',
+            data: { submissionId: submissionId, recordId: recordId },
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $(".spinner-border").hide();
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $(".spinner-border").hide();
+            }
+        });
+    }
+
+
+</script>

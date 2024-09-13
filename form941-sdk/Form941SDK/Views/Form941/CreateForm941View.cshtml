@@ -1,0 +1,1874 @@
+﻿@model Form941SDK.Models.Form941Create.Form941CreateRequest
+@using Form941SDK.Models.Utilities
+@using static Form941SDK.Models.Base.EntityBase;
+@{
+    ViewData["Title"] = "Create Form941";
+}
+<head>
+    <link href="~/css/icons-mdi/css/materialdesignicons.min.css" rel="stylesheet" />
+    <!-- Add Bootstrap CSS -->
+    <!-- Add Bootstrap Datepicker CSS and JavaScript -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+
+
+
+
+</head>
+<div class="container">
+    <div class="w-75 m-auto mt-4">
+        <div class="border-1 border rounded-2 pb-4">
+            @if (Model != null && Model.SubmissionId != Guid.Empty)
+            {
+                <h2 class="head-h1 px-12px">
+                    Update Form941
+                </h2>
+            }
+            else
+            {
+                <h2 class="head-h1 px-12px">
+                    Create Form941
+                </h2>
+            }
+            <div class="px-4">
+
+                @using (Html.BeginForm("", "", FormMethod.Post, new { id = "Form941CreateForm" }))
+                {
+                    <!-- Page 1 content -->
+                    <div id="page1" class="form-page">
+                        <!-- Your form fields for Page 1 -->
+                        <div class="fs-20 text-dark">
+                            @if (!string.IsNullOrWhiteSpace(@Model.Form941Records[0].ReturnHeader.Business.BusinessNm))
+                            {
+                                <span class=" position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.Form941Records[0].ReturnHeader.Business.BusinessNm</span> <span class="text-muted fs-14"></span>
+                            }
+                            else
+                            {
+                                <span class=" position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.Form941Records[0].ReturnHeader.Business.FirstNm @Model.Form941Records[0].ReturnHeader.Business.LastNm @Model.Form941Records[0].ReturnHeader.Business.MiddleNm @Model.Form941Records[0].ReturnHeader.Business.Suffix</span> <span class="text-muted fs-14"></span>
+                            }
+
+                                @if (Model.Form941Records[0].ReturnHeader.Business.EINorSSN.Length > 10)
+                                {
+                                    <span>(SSN : @Model.Form941Records[0].ReturnHeader.Business.EINorSSN)</span>
+                                }
+                                else
+                                {
+                                    <span>(EIN : @Model.Form941Records[0].ReturnHeader.Business.EINorSSN)</span>
+                                }
+                        </div>
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    <label class="control-label"><span class="text-danger">*</span>Tax Year:</label>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.TaxYr, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    <label class="control-label"><span class="text-danger">*</span>Quater:</label>
+                                    @Html.DropDownListFor(model => model.Form941Records[0].ReturnHeader.Qtr, Enum.GetValues(typeof(QuaterType)).Cast
+                                <QuaterType>
+                                ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "Select", new {@class = "form-control form-select" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    <label class="control-label"><span class="text-danger">*</span>Sequence Id:</label>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].SequenceId, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                            </div>
+                        </div>
+
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">1. Number of employees who received wages, tips, or other compensation for the pay period including: Mar. 12 (Quarter 1), June 12 (Quarter 2), Sept. 12 (Quarter 3), or Dec. 12 (Quarter 4)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>1</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.EmployeeCnt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">2. Wages, tips, and other compensation</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>2</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.WagesAmt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">3. Federal income tax withheld from wages, tips, and other compensation</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>3</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.FedIncomeTaxWHAmt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">4. If no wages, tips, and other compensation are subject to social security or Medicare tax</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+
+                                    @Html.CheckBoxFor(model => model.Form941Records[0].ReturnData.Form941.WagesNotSubjToSSMedcrTaxIndNullable, new { @class = " form-check-input mt-2 me-2" })
+                                    <span class='mt-1 pe-2'>Check and go to line 6</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-7">
+                                <div class="labelName">
+                                    <label class="control-label">5a. Taxable social security wages :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="labelName">
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5aInitialAmt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="calculation">
+                                    <span style="font-size:13px">x 0.124 =</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="labelName">
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5a, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-7">
+                                <div class="labelName">
+                                    <label class="control-label">5b. Taxable social security tips :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="labelName">
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5bInitialAmt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="calculation">
+                                    <span style="font-size:13px">x 0.124 =</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="labelName">
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5b, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-7">
+                                <div class="labelName">
+                                    <label class="control-label">5c. Taxable Medicare wages & tips :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="labelName">
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5cInitialAmt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="calculation">
+                                    <span style="font-size:13px">x 0.029 =</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="labelName">
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5c, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-7">
+                                <div class="labelName">
+                                    <label class="control-label">5d. Taxable wages & tips subject to Additional Medicare Tax withholding :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="labelName">
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5dInitialAmt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="calculation">
+                                    <span style="font-size:13px">x 0.009 =</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="labelName">
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5d, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">5e Total social security and Medicare taxes. Add Column 2 from lines 5a, 5b, 5c, and 5d</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>5e</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line5e, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">5f. Section 3121(q) Notice and Demand-Tax due on unreported tips :</label><span>(see Instructions)</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>5f</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.TaxOnUnreportedTips3121qAmt, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">6. Total taxes before adjustments :</label><span>Add lines 3, 5e, and 5f</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>6</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line6, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">7. Current quarter's adjustment for fractions of cents :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>7</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.CurrentQtrFractionsCentsAmt, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">8. Current quarter's adjustment for sick pay :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>8</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.CurrentQuarterSickPaymentAmt, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">9. Current quarter's adjustment for tips and group-term life insurance :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>9</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.CurrQtrTipGrpTermLifeInsAdjAmt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">10. Total taxes after adjustments : </label><span> Combine lines 6 through 9</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>10</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line10, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    @Html.CheckBoxFor(model => model.Form941Records[0].ReturnData.Form941.IsPayrollTaxCredit, new { @class = " form-check-input me-2",id="IsPayrroll" ,onchange="IsPayrrollcheckbox()"})
+                                    <span class='mt-1 pe-2'>Is Payroll Tax Credit</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="8974Popup" type="button" style="display:none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Form8974</button>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">11. Qualified small business payroll tax credit for increasing research activities :</label> <span> Attach Form 8974</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>11</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line11, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">12. Total taxes after adjustments and nonrefundable credits :</label><span>Subtract line 11 from line 10</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>12</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line12, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">13. Total deposits for this quarter, including overpayment applied from a prior quarter and overpayments applied from Form 941-X, 941-X (PR), or 944-X filed in the current quarter</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>13</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.TotTaxDepositAmt, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">14. Balance due : </label><span>If line 12 is more than line 13, enter the difference</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>14</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line14, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">15. Overpayment :</label><span>If line 13 is more than line 12, enter the difference</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+                                    <span class='mt-1 pe-2'>15</span>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Line15, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="offcanvas offcanvas-end w-75 modal-xl modal-md modal-dialog-scrollable m-0 h-100 ms-auto" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                            <div class="offcanvas-header rounded-0 border-0 bg-secondary">
+                                <h5 id="offcanvasRightLabel" class="modal-title">Form 8974</h5>
+                                <button type="button" class="btn-close text-reset  bg-white rounded-circle border-0 fw-bold position-absolute end-n-10 top-n-13 modal-close button-hide fs-18 fw-500" data-bs-dismiss="offcanvas" aria-label="Close">X</button>
+
+                            </div>
+                            <div class="offcanvas-body">
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">7. Enter the amount from Part 1, line 6(g): </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>7</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line7, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                8. Enter the amount from Form 941, line 5a, Column 2; Form 943, line 3; or Form 944, line 4a, Column 2
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>8</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line8, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                9. Enter the amount from Form 941, line 5b, Column 2; or Form 944, line 4b, Column 2
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>9</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line9, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                10. Add lines 8 and 9
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>10</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line10, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                11. Multiply line 10 by 50% (0.50). Check this box   @Html.RadioButtonFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.PayerIndicatorType,"THIRDPARTYSICKPAYIND",new { @class = " form-check-input  me-2" })if you're a third-party payer of sick pay or check this box  @Html.RadioButtonFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.PayerIndicatorType,"SECTION3121QIND",new { @class = " form-check-input  me-2" }) if you received a Section 3121(q) Notice and Demand. See the instructions before completing line 11 Clear
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>11</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line11, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                12. Credit against the employer share of social security tax. Enter the smaller of line 7 or 11, but not more than $250,000. See the instructions before entering an amount if you file Form 943 or Form 944. If you entered the amount from line 7, stop here and also enter this amount on Form 941, line 11; Form 943, line 12a; or Form 944, line 8a
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>12</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line12, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                13. Subtract line 12 from line 7
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>13</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line13, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                14. Enter the amount from Form 941, line 5c, column 2; Form 943, line 5; or Form 944, line 4c, column 2
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>14</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line14, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                15. Multiply line 14 by 50% (0.50). If you’re a third-party payer of sick pay or you received a Section 3121(q) Notice and Demand, see the instructions before completing line 15
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>15</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line15, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                16. Credit against the employer share of Medicare tax. Enter the smaller of line 13 or 15
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>16</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line16, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-md-9">
+                                        <div class="labelName">
+                                            <label class="control-label">
+                                                17. Total credit. Add lines 12 and 16. Also, enter this amount on Form 941, line 11; Form 943, line 12a; or Form 944, line 8a
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="labelName d-flex">
+                                            <span class='mt-1 pe-2'>17</span>
+                                            @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.Form941.Form8974.Line17, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h5 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">Form8974IncomeTaxDetails</h5>
+                                <table class="table table-bordered text-field-table w-100 mx-auto" id="tbl_posts2" style="border-collapse:collapse">
+                                    <thead>
+                                        <tr class="bg-gray">
+                                            <th class="fw-500 text-dark text-center" scope="col">S.NO</th>
+                                            <th class="fw-500 text-dark text-center" scope="col">(a) Ending date of income tax period</th>
+                                            <th class="fw-500 text-dark text-center" scope="col" style="width:157px">(b) Income tax return filed that included Form 6765</th>
+                                            <th class="fw-500 text-dark text-center" scope="col">(c) Date income tax return was filed</th>
+                                            <th class="fw-500 text-dark text-center" style="width:140px" scope="col">(d) EIN used on Form 6765</th>
+                                            <th class="fw-500 text-dark text-center" scope="col">(e) Amount from Form 6765, line 44, or if applicable, the amount that was allocated to your EIN</th>
+                                            <th class="fw-500 text-dark text-center" scope="col">(f) Amount of credit from column (e) taken on a previous period(s)</th>
+                                            <th class="fw-500 text-dark text-center" scope="col">(g) Remaining credit (subtract column (f) from column (e))</th>
+
+                                            <th class="fw-500 text-dark text-center" scope="col" width="75px"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dynamic-tableincometaxdetails">
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a class="btn-rounded-hover add-Form8974 rounded-circle p-2 lh-1">
+                                                    <i class="mdi mdi-plus-circle-outline text-muted fs-4 circleplus" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="Add"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class='d-flex align-items-center justify-content-between mt-5 px-5'>
+                            @if (Model != null && Model.SubmissionId != Guid.Empty)
+                            {
+                                <div>
+                                    <button type="button" class="btn_cancel  mb-3 float-left" onclick="location.href='@Url.Action("Get941List", "Form941", new { businessId = Model.Form941Records[0].ReturnHeader.Business.BusinessId})'" id="btnback">
+                                        <i class="fa fa-arrow-circle-left"></i>
+                                        Back
+                                    </button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <button type="button" class="btn_cancel  mb-3 float-left" onclick="location.href='@Url.Action("GetBusinessList", "Business")'">
+                                        <i class="fa fa-arrow-circle-left"></i>
+                                        Back
+                                    </button>
+                                </div>
+                            }
+                            <div>
+                                <button type="button" class="btn btn_primary shadow btn_md float-right" onclick="navigateToPage('page2')">
+                                    Continue
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Page 2 content -->
+                    <div id="page2" class="form-page" style="display: none;">
+                        <!-- Your form fields for Page 2 -->
+
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-4">
+                                <div class="labelName">
+                                    <label class="control-label">Check one :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="labelName">
+                                    @Html.RadioButtonFor(model => model.Form941Records[0].ReturnData.Form941.OverPaymentRecoveryType,"APPLYTORETURN",new { @class = " form-check-input  me-2" })
+                                    <span class='mt-1 pe-2'>Apply To Return</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="labelName">
+                                    @Html.RadioButtonFor(model => model.Form941Records[0].ReturnData.Form941.OverPaymentRecoveryType,"REFUND", new { @class = " form-check-input  me-2" })
+                                    <span class='mt-1 pe-2'> Refund</span>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">
+                            16. Depositor Details
+                        </h4>
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    <label class="control-label"><span class="text-danger">*</span>DepositorType:</label>
+
+                                    @Html.DropDownListFor(model => model.Form941Records[0].ReturnData.DepositScheduleType.DepositorType, Enum.GetValues(typeof(DepositorType)).Cast
+                                <DepositorType>
+                                ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "Deposit Type", new {@class = "form-control form-select",onchange="DeposiType()",id="depositypeid" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    <label class="control-label">TotalQuarterTaxLiabilityAmt:</label>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.DepositScheduleType.TaxLiabilityTotalAmt, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div id="monthly" style="display:none">
+                            <h4>Monthly Depositor Details</h4>
+                            <div class="row d-flex justify-content-center mb-2 ">
+                                <div class="col-md-4">
+                                    <div class="labelName">
+                                        <label class="control-label">Tax Liability Month 1 :</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="labelName">
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.DepositScheduleType.MonthlyDepositor.TaxLiabilityMonth1, new { @class = "form-control" })
+                                    </div>
+                                    <div class='col-md-4'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-2 ">
+                                <div class="col-md-4">
+                                    <div class="labelName">
+                                        <label class="control-label">Tax Liability Month 2 :</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="labelName">
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.DepositScheduleType.MonthlyDepositor.TaxLiabilityMonth2, new { @class = "form-control" })
+                                    </div>
+                                    <div class='col-md-4'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-2 ">
+                                <div class="col-md-4">
+                                    <div class="labelName">
+                                        <label class="control-label">Tax Liability Month 3 :</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="labelName">
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.DepositScheduleType.MonthlyDepositor.TaxLiabilityMonth3, new { @class = "form-control" })
+                                    </div>
+                                    <div class='col-md-4'>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="semiweekly" style="display:none">
+                            <h4 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">SemiWeekly Depositor Details</h4>
+                            <h5 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">ScheduleB Month1 Amount</h5>
+                            <table class="table table-bordered text-field-table w-100 mx-auto" id="tbl_posts2" style="border-collapse:collapse">
+                                <thead>
+                                    <tr class="bg-gray">
+                                        <th class="fw-500 text-dark text-center" scope="col">S.NO</th>
+                                        <th class="fw-500 text-dark text-center" scope="col">Days</th>
+                                        <th class="fw-500 text-dark text-center" scope="col">Amount</th>
+
+                                        <th class="fw-500 text-dark text-center" scope="col" width="75px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dynamic-table1">
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a class="btn-rounded-hover add-ScheduleBMonth1 rounded-circle p-2 lh-1">
+                                                <i class="mdi mdi-plus-circle-outline text-muted fs-4 circleplus" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="Add"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h5 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">ScheduleB Month2 Amount</h5>
+                            <table class="table table-bordered text-field-table w-100 mx-auto" id="tbl_posts2" style="border-collapse:collapse">
+                                <thead>
+                                    <tr class="bg-gray">
+                                        <th class="fw-500 text-dark text-center" scope="col">S.NO</th>
+                                        <th class="fw-500 text-dark text-center" scope="col">Days</th>
+                                        <th class="fw-500 text-dark text-center" scope="col">Amount</th>
+
+                                        <th class="fw-500 text-dark text-center" scope="col" width="75px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dynamic-table2">
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a class="btn-rounded-hover add-ScheduleBMonth2 rounded-circle p-2 lh-1">
+                                                <i class="mdi mdi-plus-circle-outline text-muted fs-4 circleplus" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="Add"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h5 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">ScheduleB Month3 Amount</h5>
+                            <table class="table table-bordered text-field-table w-100 mx-auto" id="tbl_posts2" style="border-collapse:collapse">
+                                <thead>
+                                    <tr class="bg-gray">
+                                        <th class="fw-500 text-dark text-center" scope="col">S.NO</th>
+                                        <th class="fw-500 text-dark text-center" scope="col">Days</th>
+                                        <th class="fw-500 text-dark text-center" scope="col">Amount</th>
+
+                                        <th class="fw-500 text-dark text-center" scope="col" width="75px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dynamic-table3">
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a class="btn-rounded-hover add-ScheduleBMonth3 rounded-circle p-2 lh-1">
+                                                <i class="mdi mdi-plus-circle-outline text-muted fs-4 circleplus" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="Add"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <h4 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">Business Status Details</h4>
+
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">17. If your business has closed or you stopped paying wages :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+
+                                    @Html.CheckBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.IsBusinessClosed ,new { @class = " form-check-input me-2", onclick="BusinessClosed()",id="businessclosedid" })
+                                    <span class='mt-1 pe-2'>Check here</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="businesscloseddetails" style="display:none">
+                            <h5 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">Business Closed Details</h5>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Name:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.Name, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Final Date Wages Paid:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.FinalDateWagesPaid, new { @class = "form-control datepicker"})
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <span>@Html.CheckBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.IsForeign, new { onchange = "EnableOrDisableFields()", @class = "css-checkbox form-check-input", id = "IsForeign" }) Is Foreign?</span>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Address1:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.USAddress.Address1, new { @id = "USAddress1", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.ForeignAddress.Address1, new { @id = "ForeignAddress1", @style = "display:none", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger"></span>Address2:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.USAddress.Address2, new { @id = "USAddress2", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.ForeignAddress.Address2, new { @id = "ForeignAddress2", @style = "display:none", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>City:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.USAddress.City, new { @id = "UsaddressCity", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.ForeignAddress.City, new { @id = "ForeginAddressCity", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="state_lbl"><span class="text-danger">*</span>State:</label>
+                                        @Html.DropDownListFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.USAddress.State, Enum.GetValues(typeof(USStates)).Cast
+                                    <USStates>
+                                    ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "State", new { @id = "State",@class = "form-control form-select" })
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.ForeignAddress.ProvinceOrStateNm, new { @id = "ProvinceOrStateNm", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="zip_code_lbl"><span class="text-danger">*</span>ZipCd:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.USAddress.ZipCd, new { @id = "ZipCd", @class = "form-control"})
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.ForeignAddress.PostalCd, new { @id = "PostalCd", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="country_lbl" style="display:none;"><span class="text-danger">*</span>Country:</label>
+                                        @Html.DropDownListFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessClosedDetails.ForeignAddress.Country,Enum.GetValues(typeof(CountryList)).Cast
+                                    <CountryList>
+                                    ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "Country", new { @id = "country", @class = "form-control form-select", @style = "display:none" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row d-flex justify-content-center mb-2">
+                            <div class="col-md-9">
+                                <div class="labelName">
+                                    <label class="control-label">18. If you're a seasonsal employer and you don't have to file a return for every quarter of the year :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="labelName d-flex">
+
+                                    @Html.CheckBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.IsSeasonalEmployer ,new { @class = " form-check-input me-2",id="checkboxIsTicked" })
+                                    <span class='mt-1 pe-2'>Check here</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='d-flex align-items-center justify-content-between mt-5 px-5'>
+                            <div>
+                                <button type="button" class="btn_cancel  mb-3 float-left" onclick="navigateToPage('page1')">
+                                    <i class="fa fa-arrow-circle-left"></i>
+                                    Back
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn_primary shadow btn_md float-right" onclick="navigateToPage('page3')">
+                                    Continue
+                                </button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <!-- Page 3 content -->
+                    <div id="page3" class="form-page" style="display: none;">
+                        <!-- Your form fields for Page 3 -->
+                        <h4 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">
+                            IRS Payment Details
+                        </h4>
+
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    <label class="control-label"><span class="text-danger">*</span>IRS Payment Type:</label>
+
+                                    @Html.DropDownListFor(model => model.Form941Records[0].ReturnData.IRSPaymentType, Enum.GetValues(typeof(IRSPaymentOption)).Cast
+                                <IRSPaymentOption>
+                                ().Select(x => new SelectListItem { Text = (x).ToString(), Value = (x).ToString() }), "IRS Payment Type", new {@class = "form-control form-select",onchange="IRSPaymentOption()",id="IRSPaymentOptionid" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                            </div>
+                        </div>
+                        <div id="irsdetails" style="display:none">
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Bank Routing Number:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.IRSPayment.BankRoutingNum, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Account Type:</label>
+                                        @Html.DropDownListFor(model => model.Form941Records[0].ReturnData.IRSPayment.AccountType, Enum.GetValues(typeof(AccountType)).Cast
+                                    <AccountType>
+                                    ().Select(x => new SelectListItem { Text = (x).ToString(), Value = (x).ToString() }), "Account Type", new {@class = "form-control form-select" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Bank Account Number:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.IRSPayment.BankAccountNum, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Phone:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnData.IRSPayment.Phone, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6">
+                                <div class="labelName">
+                                    <label>Is Third Party Designee?</label>
+                                    @Html.CheckBoxFor(model => model.Form941Records[0].ReturnHeader.IsThirdPartyDesignee, new { @class = " form-check-input me-2", onclick="ThirdPartyDesignee()",id="thirdpartydesigneeid" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="labelName">
+                                    <label>Is Business Transferred?</label>
+                                    @Html.CheckBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.IsBusinessTransferred, new { @class = " form-check-input me-2", onclick="IsBusinessTransferred()",id="businesstransferredid" })
+                                </div>
+                            </div>
+                        </div>
+                        <div id="thirdpartydetails" style="display:none">
+                            <h4 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">
+                                Third Party Details
+                            </h4>
+
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Name:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.ThirdPartyDesignee.Name, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Phone:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.ThirdPartyDesignee.Phone, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>PIN:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.ThirdPartyDesignee.PIN, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="businesstransferdetails" style="display:none">
+                            <h4 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">
+                                Business Transferred Details
+                            </h4>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Name:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.Name, new {  @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Business Change Type:</label>
+                                        @Html.DropDownListFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.BusinessChangeType, Enum.GetValues(typeof(BusinessTransfer)).Cast
+                                    <BusinessTransfer>
+                                    ().Select(x => new SelectListItem { Text = (x).ToString(), Value = (x).ToString() }), "Business Change Type", new {@class = "form-control form-select" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label">Date Of Change:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.DateOfChange, new {  @class = "form-control datepicker" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>New Business Type:</label>
+                                        @Html.DropDownListFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.NewBusinessType, Enum.GetValues(typeof(BusinessType)).Cast
+                                    <BusinessType>
+                                    ().Select(x => new SelectListItem { Text = (x).ToString(), Value = (x).ToString() }), "Business Type", new {@class = "form-control form-select" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                    <span>@Html.CheckBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.IsForeign, new { onchange = "EnableOrDisableFieldsforTransfer()", @class = "css-checkbox form-check-input", id = "TransferIsForeign" }) Is Foreign?</span>
+
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>New Business Name:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.NewBusinessName, new {@class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>Address1:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.USAddress.Address1, new { @id = "TransferUSAddress1", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.ForeignAddress.Address1, new { @id = "TransferForeignAddress1", @style = "display:none", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger"></span>Address2:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.USAddress.Address2, new { @id = "TransferUSAddress2", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.ForeignAddress.Address2, new { @id = "TransferForeignAddress2", @style = "display:none", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label"><span class="text-danger">*</span>City:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.USAddress.City, new { @id = "TransferUsaddressCity", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.ForeignAddress.City, new { @id = "TransferForeginAddressCity", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="Transferstate_lbl"><span class="text-danger">*</span>State:</label>
+                                        @Html.DropDownListFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.USAddress.State, Enum.GetValues(typeof(USStates)).Cast
+                                    <USStates>
+                                    ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "State", new { @id = "TransferState",@class = "form-control form-select" })
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.ForeignAddress.ProvinceOrStateNm, new { @id = "TransferProvinceOrStateNm", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="Transferzip_code_lbl"><span class="text-danger">*</span>ZipCd:</label>
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.USAddress.ZipCd, new { @id = "TransferZipCd", @class = "form-control"})
+                                        @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.ForeignAddress.PostalCd, new { @id = "TransferPostalCd", @class = "form-control", @style = "display:none" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row d-flex justify-content-center mb-15px">
+                                <div class="col-md-6">
+                                    <div class="labelName">
+                                        <label class="control-label" id="Transfercountry_lbl" style="display:none;"><span class="text-danger">*</span>Country:</label>
+                                        @Html.DropDownListFor(model => model.Form941Records[0].ReturnHeader.BusinessStatusDetails.BusinessTransferredDetails.ForeignAddress.Country,Enum.GetValues(typeof(CountryList)).Cast
+                                    <CountryList>
+                                    ().Select(x => new SelectListItem { Text = Utility.GetEnumDisplayName(x), Value = (x).ToString() }), "Country", new { @id = "Transfercountry", @class = "form-control form-select", @style = "display:none" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="sub-head text-left mt-4 mb-3 " style="font-weight:bold">
+                            Signature Details
+                        </h4>
+                        <div class="row d-flex justify-content-center mb-15px">
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    <label class="control-label"><span class="text-danger">*</span>Signature Type:</label>
+
+                                    @Html.DropDownListFor(model => model.Form941Records[0].ReturnHeader.SignatureDetails.SignatureType, Enum.GetValues(typeof(SignatureType)).Cast
+                                <SignatureType>
+                                ().Select(x => new SelectListItem { Text = (x).ToString(), Value = (x).ToString() }), "Signature Type", new {@class = "form-control form-select",onchange="SignatureType()",id="SignatureTypeid" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <div class="labelName">
+                                    <label class="control-label" id="OnlineSignature_label" style="display:none"><span class="text-danger">*</span>OnlineSignaturePIN:</label>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.SignatureDetails.OnlineSignaturePIN.PIN, new { @id = "OnlineSignaturePINid", @class = "form-control", @style = "display:none"})
+                                    <label class="control-label" id="ReportingAgentPIN_label" style="display:none"><span class="text-danger">*</span>ReportingAgentPIN:</label>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.SignatureDetails.ReportingAgentPIN.PIN, new { @id = "ReportingAgentPINid", @class = "form-control", @style = "display:none" })
+                                    <label class="control-label" id="TaxPayerPIN_label" style="display:none"><span class="text-danger">*</span>TaxPayerPIN:</label>
+                                    @Html.TextBoxFor(model => model.Form941Records[0].ReturnHeader.SignatureDetails.TaxPayerPIN.PIN, new { @id = "TaxPayerPINid", @class = "form-control", @style = "display:none" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @if (Model != null && Model.SubmissionId != Guid.Empty)
+                        {
+                            <div class='d-flex align-items-center justify-content-between mt-5 px-5'>
+                                <div>
+                                    <button type="button" class="btn_cancel btn-back  mb-3 float-left" onclick="navigateToPage('page2')" id="btnback">
+                                        <i class="fa fa-arrow-circle-left"></i>
+                                        Back
+                                    </button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn_primary shadow btn_md float-right" onclick="UpdateForm941('@Model?.Form941Records[0].ReturnHeader.Business.BusinessId','@Model?.Form941Records[0].ReturnHeader.Business.BusinessNm','@Model?.Form941Records[0].ReturnHeader.Business.EINorSSN')" id="btnupdate">
+                                        Update Form941
+                                        <i class="fa fa-spinner fa-spin" aria-hidden="true" id="CreateSpinner" style="display:none"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class='d-flex align-items-center justify-content-between mt-5 px-5'>
+                                <div>
+                                    <button type="button" class="btn_cancel btn-back  mb-3 float-left" onclick="navigateToPage('page2')" id="btnback">
+                                        <i class="fa fa-arrow-circle-left"></i>
+                                        Back
+                                    </button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn_primary shadow btn_md float-right" onclick="ValidateForm941()" id="btnvalidateform">
+                                        ValidateForm
+                                        <i class="fa fa-spinner fa-spin" aria-hidden="true" id="CreateSpinner" style="display:none"></i>
+                                    </button>
+                                    <button type="button" class="btn btn_primary shadow btn_md float-right" onclick="createForm941('@Model?.Form941Records[0].ReturnHeader.Business.BusinessId','@Model?.Form941Records[0].ReturnHeader.Business.BusinessNm','@Model?.Form941Records[0].ReturnHeader.Business.EINorSSN')" id="btnCreate">
+                                        Create Form941
+                                        <i class="fa fa-spinner fa-spin" aria-hidden="true" id="CreateSpinner" style="display:none"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    @Html.HiddenFor(x=>x.Form941Records[0].ReturnHeader.Business.BusinessId)
+                    @Html.HiddenFor(x=>x.Form941Records[0].RecordId)
+                    @Html.HiddenFor(x=>x.SubmissionId)
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Get enum values from the server-side C# enum and serialize them as a JavaScript array
+    var enumOptions = @Html.Raw(Json.Serialize(Enum.GetValues(typeof(DayOfMonth)).Cast <DayOfMonth> ().Select(e => e)));
+    var optionsHtml = ' ';
+    // Create the options HTML for the select element using the enum values
+    for (var i = 0; i < enumOptions.length; i++) {
+        optionsHtml += '<option value="' + enumOptions[i] + '">' + enumOptions[i] + '</option>';
+    }
+
+    // Retrieve enum values and display names rendered from server-side
+    var enumDatafortaxreturn = @Html.Raw(Json.Serialize(Enum.GetValues(typeof(Form8974IncomeTaxReturnFiledForm)).Cast <Form8974IncomeTaxReturnFiledForm> ().Select(e => new {
+        Value = e.ToString(),
+        DisplayName = Utility.GetEnumDisplayName(e)
+        })));
+    // Create an object to store enum display names with their corresponding values
+    var enumtypetaxDisplayNames = {};
+    for (var i = 0; i < enumDatafortaxreturn.length; i++) {
+        // Use the enum value as the key and the display name as the value in the object
+        enumtypetaxDisplayNames[enumDatafortaxreturn[i].value] = enumDatafortaxreturn[i].displayName;
+    }
+
+
+    // Initialize a string to store the generated <option> elements
+    var enumTaxTypeOptions = '';
+    // Get an array of enum values (keys) from the enumDisplayNames object
+    var enumTypeTaxValues = Object.keys(enumtypetaxDisplayNames);
+    // Loop through the enum values to generate <option> elements
+    for (var i = 0; i < enumTypeTaxValues.length; i++) {
+        var typevalue = enumTypeTaxValues[i];
+        var typeDisplayName = enumtypetaxDisplayNames[typevalue];
+        // Concatenate the <option> element to the enumTaxTypeOptions string
+        enumTaxTypeOptions += "<option value='" + typevalue + "'>" + typeDisplayName + "</option>";
+    }
+
+
+
+    function navigateToPage(pageId) {
+        document.querySelectorAll(".form-page").forEach(function (page) {
+            page.style.display = "none";
+        });
+        document.getElementById(pageId).style.display = "block";
+    }
+    function IsPayrrollcheckbox() {
+        debugger
+        var ischeckeds = $("#IsPayrroll").is(":checked");
+        if (ischeckeds == true) {
+            $('#8974Popup').show();
+
+        }
+        else {
+            $('#8974Popup').hide();
+        }
+    }
+    function createForm941(businessId, businessName, tin) {
+        var formdata = $("#Form941CreateForm").serialize();
+        $("#btnCreate > i").show();
+        $("#btnCreate").prop("disabled", true);
+        $.ajax({
+            url: "/Form941/CreateForm941", // Update the controller and action
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+                $(".modal-close").click(function () {
+                    if ($(data).find('.sucesssrecord').length > 0) {
+                        window.location.href = "/Form941/Get941List?businessId=" + businessId + "&businessName=" + businessName + "&tin=" + tin;
+
+                    }
+                });
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+            }
+        });
+    }
+    function UpdateForm941(businessId, businessName, tin) {
+        var formdata = $("#Form941CreateForm").serialize();
+        $("#btnCreate > i").show();
+        $("#btnCreate").prop("disabled", true);
+        $.ajax({
+            url: "/Form941/UpdateForm941", // Update the controller and action
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+                $(".modal-close").click(function () {
+                    if ($(data).find('.sucesssrecord').length > 0) {
+                        window.location.href = "/Form941/Get941List?businessId=" + businessId + "&businessName=" + businessName + "&tin=" + tin;
+
+                    }
+                });
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+            }
+        });
+    }
+    function ValidateForm941() {
+        var formdata = $("#Form941CreateForm").serialize();
+        $("#btnvalidateform > i").show();
+        $("#btnvalidateform").prop("disabled", true);
+        $.ajax({
+            url: "/Form941/ValidateForm", // Update the controller and action
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $("#btnvalidateform > i").hide();
+                $("#btnvalidateform").prop("disabled", false);
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $("#btnvalidateform > i").hide();
+                $("#btnvalidateform").prop("disabled", false);
+            }
+        });
+    }
+    var tablecount = 0;
+    function DeposiType() {
+        debugger
+        var value = $("#depositypeid").val();
+        var MonthlyDiv = document.getElementById('monthly');
+        var SemiWeeklyDiv = document.getElementById('semiweekly');
+        if (value == "MONTHLY") {
+
+            MonthlyDiv.style.display = 'block';
+        }
+        else {
+            $("#monthly :input").val(null);
+            MonthlyDiv.style.display = 'none';
+        }
+        if (value == "SEMIWEEKLY") {
+            SemiWeeklyDiv.style.display = 'block';
+            if (tablecount == 0) {
+                $("#dynamic-table1").append('<tr class="align-middle"><td><div class="mt-2 error text-center">1</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth1Amt[0].Day"  class="form-control form-select" style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth1Amt[0].Amt"  type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record1  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+                $("#dynamic-table2").append('<tr class="align-middle"><td><div class="mt-2 error text-center">1</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth2Amt[0].Day"  class="form-control form-select" style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth2Amt[0].Amt"  type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record2  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+                $("#dynamic-table3").append('<tr class="align-middle"><td><div class="mt-2 error text-center">1</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth3Amt[0].Day"  class="form-control form-select" style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth3Amt[0].Amt"  type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record3 rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+                $('.delete-record1').hide();
+                $('.delete-record2').hide();
+                $('.delete-record3').hide();
+                tablecount++;
+            }
+        }
+        else {
+            $("#semiweekly :input").val(null);
+            SemiWeeklyDiv.style.display = 'none';
+        }
+    }
+
+    if ('@Model?.SubmissionId' == null && '@Model?.SubmissionId' == "") {
+        debugger
+        $("#dynamic-tableincometaxdetails").append('<tr class="align-middle"><td><div class="mt-2 error text-center">1</div></td><td><div class="mt-2 error"><input   name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[0].IncomeTaxPeriodEndDate"  class="form-control incomeenddate datepicker"  style="margin-right:10px"></div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[0].IncomeTaxReturnFiledForm"  class="form-control form-select incometaxreturnfiled" style="margin-right:10px"><option value="">select</option>' + enumTaxTypeOptions + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[0].IncomeTaxReturnFiledDate"  type="text"  class="form-control  incometaxreturnfileddate datepicker"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[0].Form6765EIN"  type="text"  class="form-control form6765ein"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[0].Form6765Line44Amt"  type="text"  class="form-control form6765line44"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[0].PreviousPeriodRemainingCreditAmt"  type="text"  class="form-control previousperiodamt"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[0].RemainingCredit"  type="text" class="form-control remaniningcredit"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-recordincome  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+        $('.delete-recordincome').hide();
+    }
+    var i = 2;
+    var j = 1;
+    var s = 2;
+    var t = 1;
+    var p = 2;
+    var q = 1;
+    var a = 1;
+    var b = 1;
+    $(document).ready(function () {
+
+        $(document).on('click', '.datepicker', function () {
+            debugger
+            initializeDatepicker(this);
+            $(this).datepicker('show'); // Show the datepicker when the input is clicked
+        });
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true
+        });
+        //added class to inputs
+        $('a.add-ScheduleBMonth1').click(function () {
+            debugger
+
+            $('.delete-record1').show();
+            $("#dynamic-table1").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth1Amt[' + j + '].Day"  class="form-control form-select day" style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth1Amt[' + j + '].Amt"  type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record1  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+            j++;
+            i++;
+        });
+        $('#dynamic-table1').on('click', '.delete-record1', function () {
+            debugger
+            $(this).parent().parent().remove();
+            j--; //decremnt count
+            resetValues(); //call to reset values
+        });
+        function resetValues() {
+            debugger
+            counter = 0; //initialze to 1
+            increvalue = 1;
+
+            //looping through tbody
+            $("#dynamic-table1 tr").each(function () {
+                debugger
+                $(this).find("td:first").html(increvalue).attr("class", "text-center");
+                $(this).find('.day').attr("name", "Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth1Amt[" + counter + "].Day");
+                $(this).find('.amount').attr("name", "Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth1Amt[" + counter + "].Amt");
+                counter++; //increment count
+                increvalue++;
+            })
+            debugger
+            if (counter == 1) {
+                $('.delete-record1').hide();
+
+            }
+            i = increvalue;
+        }
+
+        $('a.add-ScheduleBMonth2').click(function () {
+            debugger
+            $('.delete-record2').show();
+            $("#dynamic-table2").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + s + '</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth2Amt[' + t + '].Day"  class="form-control form-select day" style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth2Amt[' + t + '].Amt"  type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record2  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+            s++;
+            t++;
+        });
+        $('#dynamic-table2').on('click', '.delete-record2', function () {
+            debugger
+            $(this).parent().parent().remove();
+            t--; //decremnt count
+            resetValues2(); //call to reset values
+        });
+        function resetValues2() {
+            debugger
+            counter2 = 0; //initialze to 1
+            increvalue2 = 1;
+            //looping through tbody
+            $("#dynamic-table2 tr").each(function () {
+                debugger
+                $(this).find("td:first").html(increvalue2).attr("class", "text-center");
+                $(this).find('.day').attr("name", "Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth2Amt[" + counter2 + "].Day");
+                $(this).find('.amount').attr("name", "Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth2Amt[" + counter2 + "].Amt");
+                counter2++; //increment count
+                increvalue2++;
+            })
+            debugger
+            if (counter2 == 1) {
+                $('.delete-record2').hide();
+            }
+            t = increvalue2;
+        }
+
+
+
+        $('a.add-ScheduleBMonth3').click(function () {
+            debugger
+            $('.delete-record3').show();
+            $("#dynamic-table3").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + p + '</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth3Amt[' + q + '].Day"  class="form-control form-select day" style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth3Amt[' + q + '].Amt"  type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record3  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+            p++;
+            q++;
+        });
+        $('#dynamic-table3').on('click', '.delete-record3', function () {
+            debugger
+            $(this).parent().parent().remove();
+            q--; //decremnt count
+            resetValues3(); //call to reset values
+        });
+        function resetValues3() {
+            debugger
+            counter3 = 0; //initialze to 1
+            increvalue3 = 1;
+            //looping through tbody
+            $("#dynamic-table3 tr").each(function () {
+                debugger
+                $(this).find("td:first").html(increvalue3).attr("class", "text-center");
+                $(this).find('.day').attr("name", "Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth3Amt[" + counter3 + "].Day");
+                $(this).find('.amount').attr("name", "Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth3Amt[" + counter3 + "].Amt");
+                counter3++; //increment count
+                increvalue3++;
+            })
+            debugger
+            if (counter3 == 1) {
+                $('.delete-record3').hide();
+            }
+            q = increvalue3;
+        }
+
+
+
+
+        //added class to inputs
+        $('a.add-Form8974').click(function () {
+            debugger
+            if (a <= 5) {
+                debugger
+                $('.delete-recordincome').show();
+                $("#dynamic-tableincometaxdetails").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + a + '</div></td><td><div class="mt-2 error"><input   name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].IncomeTaxPeriodEndDate"  class="form-control incomeenddate datepicker" style="margin-right:10px"></div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].IncomeTaxReturnFiledForm"  class="form-control form-select incometaxreturnfiled" style="margin-right:10px"><option value="">select</option>' + enumTaxTypeOptions + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].IncomeTaxReturnFiledDate"  type="text"  class="form-control incometaxreturnfileddate datepicker"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].Form6765EIN"  type="text"  class="form-control form6765ein "></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].Form6765Line44Amt"  type="text"  class="form-control form6765line44"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].PreviousPeriodRemainingCreditAmt"  type="text"  class="form-control previousperiodamt"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].RemainingCredit"  type="text"  class="form-control remaniningcredit"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-recordincome  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+                b++;
+
+                a++;
+
+            }
+
+        });
+        $('#dynamic-tableincometaxdetails').on('click', '.delete-recordincome', function () {
+            debugger
+            $(this).parent().parent().remove();
+            b--; //decremnt count
+            a--;
+            resetValuesforincome(); //call to reset values
+        });
+        function resetValuesforincome() {
+            debugger
+            counter = 0; //initialze to 1
+            increvalue = 1;
+
+            //looping through tbody
+            $("#dynamic-tableincometaxdetails tr").each(function () {
+                debugger
+                $(this).find("td:first").html(increvalue).attr("class", "text-center");
+                $(this).find('.incomeenddate').attr("name", "Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[" + counter + "].IncomeTaxPeriodEndDate");
+                $(this).find('.incometaxreturnfiled').attr("name", "Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[" + counter + "].IncomeTaxReturnFiledForm");
+                $(this).find('.incometaxreturnfileddate').attr("name", "Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[" + counter + "].IncomeTaxReturnFiledDate");
+                $(this).find('.form6765ein').attr("name", "Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[" + counter + "].Form6765EIN");
+                $(this).find('.form6765line44').attr("name", "Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[" + counter + "].Form6765Line44Amt");
+                $(this).find('.previousperiodamt').attr("name", "Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[" + counter + "].PreviousPeriodRemainingCreditAmt");
+                $(this).find('.remaniningcredit').attr("name", "Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[" + counter + "].RemainingCredit");
+
+                counter++; //increment count
+                increvalue++;
+            })
+            debugger
+            if (counter == 1) {
+                $('.delete-recordincome').hide();
+
+            }
+            i = increvalue;
+        }
+
+
+    });
+    // Function to initialize datepicker
+    function initializeDatepicker(element) {
+        $(element).datepicker();
+    }
+    function EnableOrDisableFields() {
+        var country = document.getElementById("country");
+        country.disabled = document.getElementById("IsForeign").checked ? false : true;
+        ChangeFieldName();
+    }
+    function ChangeFieldName() {
+        var UsAddress1 = document.getElementById("USAddress1");
+        var USAddress2 = document.getElementById("USAddress2");
+        var ForeignAddress1 = document.getElementById("ForeignAddress1");
+        var ForeignAddress2 = document.getElementById("ForeignAddress2");
+        var ForeginAddressCity = document.getElementById("ForeginAddressCity");
+        var zipCodeLbl = document.getElementById("zip_code_lbl");
+        var zipCodeFld = document.getElementById("ZipCd");
+        var ForeignPostalCde = document.getElementById("PostalCd");
+        var stateLbl = document.getElementById("state_lbl");
+        var stateFld = document.getElementById("ProvinceOrStateNm");
+        var USAdressCity = document.getElementById("UsaddressCity");
+
+        var statedropdown = document.getElementById("State");
+        var CountryLbl = document.getElementById("country_lbl");
+        var CountryFld = document.getElementById("country");
+
+        if (document.getElementById("IsForeign").checked == true) {
+            UsAddress1.style.display = "none";
+            USAddress2.style.display = "none";
+            ForeignAddress1.style.display = "block";
+            ForeignAddress2.style.display = "block";
+            zipCodeLbl.innerHTML = "<span class='text-danger'>*</span>" + "Postal Code";
+            zipCodeFld.style.display = "none";
+            ForeignPostalCde.style.display = "block";
+            stateLbl.innerHTML = "<span class='text-danger'>*</span>" + "ProvinceOrStateNm";
+            statedropdown.style.display = "none";
+            stateFld.style.display = "block";
+            ForeginAddressCity.style.display = "block";
+            CountryLbl.style.display = "block";
+            CountryFld.style.display = "block";
+            USAdressCity.style.display = "none";
+            ForeginAdressCity.style.display = "block";
+
+        } else {
+            UsAddress1.style.display = "block";
+            USAddress2.style.display = "block";
+            ForeignAddress1.style.display = "none";
+            ForeignAddress2.style.display = "none";
+            ForeginAddressCity.style.display = "none";
+            zipCodeLbl.innerHTML = "<span class='text-danger'>*</span>" + "Zip Code";
+            zipCodeFld.style.display = "block";
+            ForeignPostalCde.style.display = "none";
+            stateLbl.innerHTML = "<span class='text-danger'>*</span>" + "State";
+            stateFld.style.display = "none";
+            statedropdown.style.display = "block";
+            CountryLbl.style.display = "none";
+            CountryFld.style.display = "none";
+            USAdressCity.style.display = "block";
+        }
+    }
+    function BusinessClosed() {
+        var ischeckeds = $("#businessclosedid").is(":checked");
+        if (ischeckeds == true) {
+            document.getElementById('businesscloseddetails').style.display = "block";
+        }
+        else {
+            document.getElementById('businesscloseddetails').style.display = "none";
+            $("#businesscloseddetails :input").val(null);
+        }
+    }
+    function IRSPaymentOption() {
+        debugger
+        var irsvalue = $("#IRSPaymentOptionid").val();
+        var irsdiv = document.getElementById('irsdetails');
+        if (irsvalue == "EFW") {
+            irsdiv.style.display = 'block'; // Show the div
+        }
+        else {
+            irsdiv.style.display = 'none';
+            $("#irsdetails :input").val(null);
+        }
+    }
+    function ThirdPartyDesignee() {
+        debugger
+        var isthirdcheckeds = $("#thirdpartydesigneeid").is(":checked");
+        var thirdparty = document.getElementById('thirdpartydetails');
+        if (isthirdcheckeds == true) {
+            thirdparty.style.display = 'block'; // Show the div
+        }
+        else {
+            thirdparty.style.display = 'none';
+            $("#thirdpartydetails :input").val(null);
+        }
+    }
+    function EnableOrDisableFieldsforTransfer() {
+        var Transfercountry = document.getElementById("Transfercountry");
+        Transfercountry.disabled = document.getElementById("TransferIsForeign").checked ? false : true;
+        ChangeFieldNameforTransfer();
+    }
+    function ChangeFieldNameforTransfer() {
+        var UsAddress1 = document.getElementById("TransferUSAddress1");
+        var USAddress2 = document.getElementById("TransferUSAddress2");
+        var ForeignAddress1 = document.getElementById("TransferForeignAddress1");
+        var ForeignAddress2 = document.getElementById("TransferForeignAddress2");
+        var ForeginAddressCity = document.getElementById("TransferForeginAddressCity");
+        var zipCodeLbl = document.getElementById("Transferzip_code_lbl");
+        var zipCodeFld = document.getElementById("TransferZipCd");
+        var ForeignPostalCde = document.getElementById("TransferPostalCd");
+        var stateLbl = document.getElementById("Transferstate_lbl");
+        var stateFld = document.getElementById("TransferProvinceOrStateNm");
+        var USAdressCity = document.getElementById("TransferUsaddressCity");
+
+        var statedropdown = document.getElementById("TransferState");
+        var CountryLbl = document.getElementById("Transfercountry_lbl");
+        var CountryFld = document.getElementById("Transfercountry");
+
+        if (document.getElementById("TransferIsForeign").checked == true) {
+            UsAddress1.style.display = "none";
+            USAddress2.style.display = "none";
+            ForeignAddress1.style.display = "block";
+            ForeignAddress2.style.display = "block";
+            zipCodeLbl.innerHTML = "<span class='text-danger'>*</span>" + "Postal Code";
+            zipCodeFld.style.display = "none";
+            ForeignPostalCde.style.display = "block";
+            stateLbl.innerHTML = "<span class='text-danger'>*</span>" + "ProvinceOrStateNm";
+            statedropdown.style.display = "none";
+            stateFld.style.display = "block";
+            ForeginAddressCity.style.display = "block";
+            CountryLbl.style.display = "block";
+            CountryFld.style.display = "block";
+            USAdressCity.style.display = "none";
+            ForeginAdressCity.style.display = "block";
+
+        } else {
+            UsAddress1.style.display = "block";
+            USAddress2.style.display = "block";
+            ForeignAddress1.style.display = "none";
+            ForeignAddress2.style.display = "none";
+            ForeginAddressCity.style.display = "none";
+            zipCodeLbl.innerHTML = "<span class='text-danger'>*</span>" + "Zip Code";
+            zipCodeFld.style.display = "block";
+            ForeignPostalCde.style.display = "none";
+            stateLbl.innerHTML = "<span class='text-danger'>*</span>" + "State";
+            stateFld.style.display = "none";
+            statedropdown.style.display = "block";
+            CountryLbl.style.display = "none";
+            CountryFld.style.display = "none";
+            USAdressCity.style.display = "block";
+        }
+    }
+    function IsBusinessTransferred() {
+        var istransfercheckeds = $("#businesstransferredid").is(":checked");
+        if (istransfercheckeds == true) {
+            document.getElementById('businesstransferdetails').style.display = "block";
+        }
+        else {
+            document.getElementById('businesstransferdetails').style.display = "none";
+            $("#businesstransferdetails :input").val(null);
+        }
+    }
+    function SignatureType() {
+        debugger
+        var onlinesignaturelabel = document.getElementById("OnlineSignature_label");
+        var ReportingAgentlabel = document.getElementById("ReportingAgentPIN_label");
+        var Taxpayerpinlabel = document.getElementById("TaxPayerPIN_label");
+        var onlinesignature = document.getElementById("OnlineSignaturePINid");
+        var ReportingAgent = document.getElementById("ReportingAgentPINid");
+        var Taxpayerpin = document.getElementById("TaxPayerPINid");
+
+        var signaturevalue = $("#SignatureTypeid").val();
+        if (signaturevalue == "ONLINE_SIGN_PIN") {
+            onlinesignaturelabel.style.display = "block";
+            onlinesignature.style.display = "block";
+        }
+        else {
+            onlinesignaturelabel.style.display = "none";
+            onlinesignature.style.display = "none";
+            $('#OnlineSignaturePINid').val(null);
+        }
+        if (signaturevalue == "REPORTING_AGENT") {
+            ReportingAgentlabel.style.display = "block";
+            ReportingAgent.style.display = "block";
+        }
+        else {
+            ReportingAgentlabel.style.display = "none";
+            ReportingAgent.style.display = "none";
+            $('#ReportingAgentPINid').val(null);
+        }
+        if (signaturevalue == "ERO") {
+            Taxpayerpinlabel.style.display = "block";
+            Taxpayerpin.style.display = "block";
+
+        }
+        else {
+            Taxpayerpinlabel.style.display = "none";
+            Taxpayerpin.style.display = "none";
+            $('#TaxPayerPINid').val(null);
+        }
+    }
+    window.onload = function () {
+        IsPayrrollcheckbox()
+        SignatureType()
+        IsBusinessTransferred()
+        ThirdPartyDesignee()
+        IRSPaymentOption()
+        BusinessClosed()
+        var value = $("#depositypeid").val();
+        var MonthlyDiv = document.getElementById('monthly');
+        var SemiWeeklyDiv = document.getElementById('semiweekly');
+        if (value == "MONTHLY") {
+
+            MonthlyDiv.style.display = 'block';
+        }
+        else {
+            $("#monthly :input").val(null);
+            MonthlyDiv.style.display = 'none';
+        }
+        if (value == "SEMIWEEKLY") {
+            SemiWeeklyDiv.style.display = 'block';
+    @{
+
+        var ScheduleBMonth1AmtData = "";
+        var ScheduleBMonth2AmtData = "";
+        var ScheduleBMonth3AmtData = "";
+        if (Model?.Form941Records[0]?.ReturnData?.DepositScheduleType?.SemiWeeklyDepositor?.ScheduleBMonth1Amt.Count > 0)
+        {
+            ScheduleBMonth1AmtData = Newtonsoft.Json.JsonConvert.SerializeObject(Model?.Form941Records[0]?.ReturnData?.DepositScheduleType?.SemiWeeklyDepositor?.ScheduleBMonth1Amt);
+            @:ScheduleBMonth1Amt = @Html.Raw(ScheduleBMonth1AmtData);
+        }
+        if (Model?.Form941Records[0]?.ReturnData?.DepositScheduleType?.SemiWeeklyDepositor?.ScheduleBMonth2Amt.Count > 0)
+        {
+            ScheduleBMonth2AmtData = Newtonsoft.Json.JsonConvert.SerializeObject(Model?.Form941Records[0]?.ReturnData?.DepositScheduleType?.SemiWeeklyDepositor?.ScheduleBMonth2Amt);
+            @:ScheduleBMonth2Amt = @Html.Raw(ScheduleBMonth2AmtData);
+        }
+        if (Model?.Form941Records[0]?.ReturnData?.DepositScheduleType?.SemiWeeklyDepositor?.ScheduleBMonth3Amt.Count > 0)
+        {
+            ScheduleBMonth3AmtData = Newtonsoft.Json.JsonConvert.SerializeObject(Model?.Form941Records[0]?.ReturnData?.DepositScheduleType?.SemiWeeklyDepositor?.ScheduleBMonth3Amt);
+
+            @:ScheduleBMonth3Amt = @Html.Raw(ScheduleBMonth3AmtData);
+        }
+
+    }
+                                for (j = 0; j < ScheduleBMonth1Amt.length; j++) {
+                i = j + 1;
+                var ScheduleBMonth1Amtdetails = ScheduleBMonth1Amt[j];
+                $("#dynamic-table1").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth1Amt[' + j + '].Day"  class="form-control form-select day" id="daymonth1' + j + '"style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth1Amt[' + j + '].Amt" value="' + (ScheduleBMonth1Amtdetails.Amt != null && ScheduleBMonth1Amtdetails.Amt !== "" ? ScheduleBMonth1Amtdetails.Amt : "") + '" type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record1  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+                $("#daymonth1" + j).val(ScheduleBMonth1Amtdetails.Day).attr("selected", "selected");
+
+                if (ScheduleBMonth1Amt.length == 1) {
+                    $(".delete-record1").hide();
+                }
+                i = i + 1;
+            }
+
+
+            for (t = 0; t < ScheduleBMonth2Amt.length; t++) {
+                s = t + 1;
+                var ScheduleBMonth2Amtdetails = ScheduleBMonth2Amt[t];
+                $("#dynamic-table2").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + s + '</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth2Amt[' + t + '].Day"  class="form-control form-select day" id="daymonth2' + t + '"style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth2Amt[' + t + '].Amt" value="' + (ScheduleBMonth2Amtdetails.Amt != null && ScheduleBMonth2Amtdetails.Amt !== "" ? ScheduleBMonth2Amtdetails.Amt : "") + '" type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record2  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+                $("#daymonth2" + t).val(ScheduleBMonth2Amtdetails.Day).attr("selected", "selected");
+
+                if (ScheduleBMonth2Amt.length == 1) {
+                    $(".delete-record2").hide();
+                }
+                s = s + 1;
+            }
+
+
+            for (q = 0; q < ScheduleBMonth3Amt.length; q++) {
+                p = q + 1;
+                var ScheduleBMonth3Amtdetails = ScheduleBMonth3Amt[q];
+                $("#dynamic-table3").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + p + '</div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth3Amt[' + q + '].Day"  class="form-control form-select day" id="daymonth3' + q + '"style="margin-right:10px"><option value="">Day</option>' + optionsHtml + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.DepositScheduleType.SemiWeeklyDepositor.ScheduleBMonth3Amt[' + q + '].Amt" value="' + (ScheduleBMonth3Amtdetails.Amt != null && ScheduleBMonth3Amtdetails.Amt !== "" ? ScheduleBMonth3Amtdetails.Amt : "") + '" type="text" placeholder="Amount" class="form-control amount"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record3  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+                $("#daymonth3" + q).val(ScheduleBMonth3Amtdetails.Day).attr("selected", "selected");
+
+                if (ScheduleBMonth3Amt.length == 1) {
+                    $(".delete-record3").hide();
+                }
+                p = p + 1;
+            }
+
+        }
+        else {
+            $("#semiweekly :input").val(null);
+            SemiWeeklyDiv.style.display = 'none';
+        }
+        debugger
+    @{
+        var Form8974IncomeTaxDetailsData = "";
+        if (Model?.Form941Records[0]?.ReturnData?.Form941?.Form8974?.Form8974IncomeTaxDetails?.Count > 0)
+        {
+            Form8974IncomeTaxDetailsData = Newtonsoft.Json.JsonConvert.SerializeObject(Model?.Form941Records[0]?.ReturnData?.Form941?.Form8974?.Form8974IncomeTaxDetails);
+        }
+    }
+                     var Form8974IncomeTaxDetails = @Html.Raw(Form8974IncomeTaxDetailsData != "" ? Form8974IncomeTaxDetailsData : "[]");
+        for (b = 0; b < Form8974IncomeTaxDetails.length; b++) {
+            debugger
+            a = b + 1;
+            var form8974 = Form8974IncomeTaxDetails[b];
+            $("#dynamic-tableincometaxdetails").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + a + '</div></td><td><div class="mt-2 error"><input   name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].IncomeTaxPeriodEndDate" value="' + (form8974.IncomeTaxPeriodEndDate != null && form8974.IncomeTaxPeriodEndDate !== "" ? form8974.IncomeTaxPeriodEndDate : "") + '"  class="form-control incomeenddate datepicker" style="margin-right:10px"></div></td><td><div class="mt-2 error"><select   name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].IncomeTaxReturnFiledForm"  class="form-control form-select incometaxreturnfiled" id="incometaxreturnfiledid' + b + '"style="margin-right:10px"><option value="">select</option>' + enumTaxTypeOptions + '</select></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].IncomeTaxReturnFiledDate" value="' + (form8974.IncomeTaxReturnFiledDate != null && form8974.IncomeTaxReturnFiledDate !== "" ? form8974.IncomeTaxReturnFiledDate : "") + '"  type="text"  class="form-control incometaxreturnfileddate datepicker"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].Form6765EIN" value="' + (form8974.Form6765EIN != null && form8974.Form6765EIN !== "" ? form8974.Form6765EIN : "") + '"  type="text"  class="form-control form6765ein"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].Form6765Line44Amt" value="' + (form8974.Form6765Line44Amt != null && form8974.Form6765Line44Amt !== "" ? form8974.Form6765Line44Amt : "") + '" type="text"  class="form-control form6765line44"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].PreviousPeriodRemainingCreditAmt"  value="' + (form8974.PreviousPeriodRemainingCreditAmt != null && form8974.PreviousPeriodRemainingCreditAmt !== "" ? form8974.PreviousPeriodRemainingCreditAmt : "") + '" type="text"  class="form-control previousperiodamt"></div></td><td><div class="mt-2 error"><input  name="Form941Records[0].ReturnData.Form941.Form8974.Form8974IncomeTaxDetails[' + b + '].RemainingCredit"  value="' + (form8974.RemainingCredit != null && form8974.RemainingCredit !== "" ? form8974.RemainingCredit : "") + '" type="text"  class="form-control remaniningcredit"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-recordincome  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+            $("#incometaxreturnfiledid" + b).val(form8974.IncomeTaxReturnFiledForm).attr("selected", "selected");
+            if (Form8974IncomeTaxDetails.length == 1) {
+                $(".delete-recordincome").hide();
+            }
+            a = a + 1;
+        }
+    }
+
+</script>
