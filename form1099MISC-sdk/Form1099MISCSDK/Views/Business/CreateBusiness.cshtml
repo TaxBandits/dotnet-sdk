@@ -331,6 +331,12 @@
                 $('#myModal').modal("show");
                 $("#btnCreate > i").hide();
                 $("#btnCreate").prop("disabled", false);
+                $(".modal-close").click(function () {
+                    if ($(data).find('.sucesssrecord').length > 0) {
+                        window.location.href = "/Business/GetBusinessList";
+
+                    }
+                });
             },
             error: function (err) {
                 console.log(err.responseText);

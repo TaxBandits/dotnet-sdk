@@ -99,11 +99,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="labelName">
-                                        <label class="control-label"><span class="text-danger">*</span>First Name:</label>
+                                       
                                         <div class="IsEINChecked">
+                                            <label class="control-label"><span class="text-danger">*</span>FirstPayee Name:</label>
                                             @Html.TextBoxFor(model => model.ReturnData[i].Recipient.FirstPayeeNm, new { @id = "RecipientFirstPayeeNm", @class = "form-control" })
                                         </div>
                                         <div class="IsSSNChecked">
+                                            <label class="control-label"><span class="text-danger">*</span>First Name:</label>
                                             @Html.TextBoxFor(model => model.ReturnData[i].Recipient.FirstNm, new { @id = "RecipientFirstNm", @class = "form-control" })
 
                                         </div>
@@ -113,7 +115,7 @@
                             <div class="row d-flex justify-content-center mb-2">
                                 <div class="col-md-6 IsEINChecked">
                                     <div class="labelName">
-                                        <label class="control-label"><span class="text-danger"></span>Last Name:</label>
+                                        <label class="control-label"><span class="text-danger"></span>SecondPayee Name:</label>
                                         @Html.TextBoxFor(model => model.ReturnData[i].Recipient.SecondPayeeNm, new { @id = "RecipientSecondPayeeNm", @class = "form-control" })
                                     </div>
                                 </div>

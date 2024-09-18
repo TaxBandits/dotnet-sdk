@@ -81,37 +81,48 @@ namespace Form1099MISCSDK.Models.Utilities
         #endregion
 
         #region Get File Path With Bucket Name using FileName
-        private static byte[] GetFilePathWithBucketNameusingFileName(string fileName)
+        private static async Task<byte[]> GetFilePathWithBucketNameusingFileName(string fileUrl)
         {
-
             byte[] toBytes = null;
-            AmazonS3Client client = WebStorageConnection();
-            GetPreSignedUrlRequest request = new GetPreSignedUrlRequest();
-            request.BucketName = GetAppSettings(Constants.AWSS3BucketName);
-            request.Key = fileName;
-            request.Expires = DateTime.Now.AddHours(1);
-            request.Protocol = Protocol.HTTPS;
-
-            string filePath = client.GetPreSignedURL(request);
-
-            GetObjectRequest getObjectRequest = new GetObjectRequest
+            try
             {
-                BucketName = GetAppSettings(Constants.AWSS3BucketName),
-                Key = fileName,
-                // Provide encryption information of the object stored in S3.
-                ServerSideEncryptionCustomerMethod = ServerSideEncryptionCustomerMethod.AES256,
-                ServerSideEncryptionCustomerProvidedKey = GetAppSettings(Constants.Base64Key),
-            };
+                AmazonS3Client client = WebStorageConnection();
+                var bucketName = GetAppSettings(Constants.AWSS3BucketName);
 
-            // Issue request and remember to dispose of the response
-            using (GetObjectResponse response = client.GetObjectAsync(getObjectRequest).Result)
-            {
-                using (var memoryStream = new MemoryStream())
+                // Extract the key from the URL
+                var uri = new Uri(fileUrl);
+                var key = uri.AbsolutePath.TrimStart('/'); // Remove leading slash if present
+
+                // Create the GetObjectRequest
+                var getObjectRequest = new GetObjectRequest
                 {
-                    response.ResponseStream.CopyTo(memoryStream);
-                    toBytes = memoryStream.ToArray();
+                    BucketName = bucketName,
+                    Key = key,
+                    ServerSideEncryptionCustomerMethod = ServerSideEncryptionCustomerMethod.AES256,
+                    ServerSideEncryptionCustomerProvidedKey = GetAppSettings(Constants.Base64Key),
+                };
+
+                // Issue request and remember to dispose of the response
+                using (var response = await client.GetObjectAsync(getObjectRequest))
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await response.ResponseStream.CopyToAsync(memoryStream);
+                        toBytes = memoryStream.ToArray();
+                    }
                 }
             }
+            catch (AmazonS3Exception ex)
+            {
+                // Log or handle Amazon S3 specific errors
+                Console.WriteLine($"Amazon S3 error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Log or handle general errors
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
             return toBytes;
         }
         #endregion
@@ -212,16 +223,15 @@ namespace Form1099MISCSDK.Models.Utilities
         #endregion
 
         #region GetForm1099MiscPdfS3ByFileName
-        public static byte[] GetForm1099MiscPdfS3ByFileName(string fileName)
+        public static async Task<byte[]> GetForm1099MiscPdfS3ByFileName(string fileName)
         {
             byte[] uploadedFile = null;
             if (!string.IsNullOrWhiteSpace(fileName))
             {
-                fileName.Replace(@"/ /g", string.Empty);
+                fileName = fileName.Replace(@"/ /g", string.Empty);
                 string s3Path = GetAppSettings(Constants.AmazonS3Path);
                 fileName = fileName.Replace(s3Path, string.Empty);
-                uploadedFile = GetFilePathWithBucketNameusingFileName(fileName);
-
+                uploadedFile = await GetFilePathWithBucketNameusingFileName(fileName);
             }
             return uploadedFile;
         }
