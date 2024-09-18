@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Form1099KSDK", "Form1099KSDK\Form1099KSDK.csproj", "{25468AF0-82B5-4FA7-A6ED-B1F1DD125A53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{25468AF0-82B5-4FA7-A6ED-B1F1DD125A53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25468AF0-82B5-4FA7-A6ED-B1F1DD125A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25468AF0-82B5-4FA7-A6ED-B1F1DD125A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25468AF0-82B5-4FA7-A6ED-B1F1DD125A53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {757BA924-7250-471C-BFF0-8B0DF47C9189}
+	EndGlobalSection
+EndGlobal

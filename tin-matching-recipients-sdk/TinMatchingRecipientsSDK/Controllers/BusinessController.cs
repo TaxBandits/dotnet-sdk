@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using TinMatchingRecipientsSDK.Models.Base;
 using TinMatchingRecipientsSDK.Models.Business;
 using TinMatchingRecipientsSDK.Models.Utilities;
+using static TinMatchingRecipientsSDK.Models.Base.EntityBase;
 
 namespace TinMatchingRecipientsSDK.Controllers
 {
@@ -14,7 +14,6 @@ namespace TinMatchingRecipientsSDK.Controllers
         [HttpGet]
         public IActionResult CreateBusiness()
         {
-
             return View();
         }
         #endregion
@@ -55,7 +54,7 @@ namespace TinMatchingRecipientsSDK.Controllers
                         {
                             responseJson = JsonConvert.SerializeObject(createResponse, Formatting.Indented);
                             //Deserializing JSON (Success Response) to BusinessCreateResponse object
-                            businessCreateResponse =JsonConvert.DeserializeObject<BusinessCreateResponse>(responseJson);
+                            businessCreateResponse = JsonConvert.DeserializeObject<BusinessCreateResponse>(responseJson);
                         }
                     }
                     else
@@ -64,13 +63,12 @@ namespace TinMatchingRecipientsSDK.Controllers
                         responseJson = JsonConvert.SerializeObject(createResponse, Formatting.Indented);
 
                         //Deserializing JSON (Error Response) to BusinessCreateResponse object
-                        businessCreateResponse =JsonConvert.DeserializeObject<BusinessCreateResponse>(responseJson);
+                        businessCreateResponse = JsonConvert.DeserializeObject<BusinessCreateResponse>(responseJson);
                     }
                 }
             }
 
             return PartialView("_BusinessCreateResponse", businessCreateResponse);
-
         }
         #endregion
 
@@ -91,7 +89,7 @@ namespace TinMatchingRecipientsSDK.Controllers
                 using (var apiClient = new HttpClient())
                 {
                     //API URL to Get Business List Return
-                    string requestUri = Constants.BUSINESS_LIST_URL+ "?Page=1&PageSize=10";
+                    string requestUri = Constants.BUSINESS_LIST_URL + "?Page=1&PageSize=10";
                     //Get URLs from App.Config
                     apiClient.BaseAddress = new Uri(Utility.GetAppSettings(Constants.TBS_PUBLIC_API_BASE_URL));
                     //Construct HTTP headers
@@ -107,7 +105,7 @@ namespace TinMatchingRecipientsSDK.Controllers
                         {
                             getResponseJSON = JsonConvert.SerializeObject(listResponse, Formatting.Indented);
                             //Deserializing JSON (Success Response) to businessListResponse object
-                            businessListResponse =JsonConvert.DeserializeObject<BusinessListResponse>(getResponseJSON);
+                            businessListResponse = JsonConvert.DeserializeObject<BusinessListResponse>(getResponseJSON);
                         }
                     }
                 }

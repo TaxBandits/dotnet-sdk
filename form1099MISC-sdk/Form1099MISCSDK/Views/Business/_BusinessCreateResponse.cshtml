@@ -1,0 +1,92 @@
+﻿@model Form1099MISCSDK.Models.Business.BusinessCreateResponse
+<div class="modal-header">
+    <h5 class="modal-title">Create Business Response</h5>
+    <button type="button" class="btn-close bg-white rounded-circle border-0 fw-bold position-absolute end-n-10 top-n-13 modal-close button-hide fs-18 fw-500" data-bs-dismiss="modal" aria-label="Close">X</button>
+</div>
+<div class="modal-body">
+    <div class="table-container mt-2 mb-4">
+        <table>
+            <tbody>
+                <tr class="fw-600 ">
+                    <th class="text-center fw-600 bg-dull-blue">Status Code</th>
+                    <th class="text-center">Status Name</th>
+                    <th class="text-center">Status Message</th>
+                </tr>
+                <tr>
+                    <td class="text-center align-top">
+                        @Model.StatusCode
+                    </td>
+                    <td class="text-center align-top">
+                        @Model.StatusName
+                    </td>
+                    @if (Model.StatusCode == 200)
+                    {
+                        <td class="text-center border-radious-bottom-right align-top text-success">
+                            @Model.StatusMessage
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text-center border-radious-bottom-right align-top text-danger">
+                            @Model.StatusMessage
+                        </td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    @if (Model != null && Model.Errors != null && Model.Errors.Count > 0)
+    {
+        <h2 class="tabel-sub-head">Error Records</h2>
+        <div class="table-container mb-3">
+            <table>
+                <tbody>
+                    <tr class="fw-600 ">
+                        <th class="text-center fw-600">Id</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Message</th>
+                    </tr>
+                    @foreach (var item in Model.Errors)
+                    {
+                        <tr>
+                            <td class="text-center align-top">@item.ID</td>
+                            <td class="text-center align-top">@item.Name</td>
+                            <td class="text-center border-radious-bottom-right align-top">@item.Message</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    @if (Model != null && Model.StatusCode == 200)
+    {
+        <h2 class="tabel-sub-head sucesssrecord">Success Records</h2>
+        <div class="table-container mb-3">
+            <table>
+                <tbody>
+                    <tr class="fw-600 ">
+                        <th class="text-center fw-600">Business Id</th>
+                        <th class="text-center">IsEIN</th>
+                        <th class="text-center">EINorSSN</th>
+                        <th class="text-center">BusinessNm</th>
+                        <th class="text-center">FirstNm</th>
+                        <th class="text-center">LastNm</th>
+                        <th class="text-center">MiddleNm</th>
+                        <th class="text-center">Suffix</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center align-top">@Model.BusinessId</td>
+                        <td class="text-center align-top">@Model.IsEIN</td>
+                        <td class="text-center border-radious-bottom-right align-top">@Model.EINorSSN</td>
+                        <td class="text-center border-radious-bottom-right align-top">@Model.BusinessNm</td>
+                        <td class="text-center border-radious-bottom-right align-top">@Model.FirstNm</td>
+                        <td class="text-center border-radious-bottom-right align-top">@Model.LastNm</td>
+                        <td class="text-center border-radious-bottom-right align-top">@Model.MiddleNm</td>
+                        <td class="text-center border-radious-bottom-right align-top">@Model.Suffix</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

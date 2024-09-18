@@ -15,7 +15,15 @@
 
             </div>
             <div class="fs-20 text-dark">
-                <span class="heading-bottom-line position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.TINMatchingDetails.Business.BusinessNm</span> <span class="text-muted fs-14">
+                @if (!string.IsNullOrWhiteSpace(@Model.TINMatchingDetails.Business.BusinessNm))
+                {
+                    <span class="heading-bottom-line position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.TINMatchingDetails.Business.BusinessNm</span> <span class="text-muted fs-14"></span>
+                }
+                else
+                {
+                    <span class="heading-bottom-line position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.TINMatchingDetails.Business.FirstNm @Model.TINMatchingDetails.Business.LastNm @Model.TINMatchingDetails.Business.MiddleNm @Model.TINMatchingDetails.Business.Suffix</span> <span class="text-muted fs-14"></span>
+                }
+                
                     @if (Model.TINMatchingDetails.Business.TIN.Length > 10)
                     {
                         <span>(SSN : @Model.TINMatchingDetails.Business.TIN)</span>
@@ -25,7 +33,6 @@
                         <span>(EIN : @Model.TINMatchingDetails.Business.TIN)</span>
                     }
             </div>
-
             <div class="table-responsive overflow-hidden m-3">
                 <div>
                     <p>
@@ -59,7 +66,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-between align-items-center m-3">
-            <button type="button" class=" btn_cancel btn-md shadow fw-500'" onclick="location.href='@Url.Action("GetBusinessList", "Business")'" id="btnback">
+            <button type="button" class=" btn_cancel btn-md  fw-500'" onclick="location.href='@Url.Action("GetBusinessList", "Business")'">
                 <i class="fa fa-arrow-circle-left"></i>
                 Back
             </button>
@@ -71,9 +78,7 @@
 
 }
 <script>
-
     $(document).ready(function () {
-
         var j = 0;
         var i = 1;
         $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].SequenceId" type="text" placeholder="Sequence Id" class="form-control seqid"></div></td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].Name" type="text" class="form-control name" placeholder="Recipient Name"></div></td><td><div class="mt-2 error"><select class="form-control tintype form-select"  name="TINMatchingDetails.Recipients[' + j + '].TINType" placeholder="Tin Type"><option value="">TIN Type</option><option>EIN</option><option>SSN</option></select></div > </td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].TIN" type="text" placeholder="TIN" class="form-control tin" maxlength="9"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
@@ -82,22 +87,22 @@
         i++;
         //added class to inputs
         $('a.add-RecipientList').click(function () {
-           
+
             $('.delete-record').show();
             $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].SequenceId" type="text" placeholder="Sequence Id" class="form-control seqid"></div></td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].Name" type="text" class="form-control name" placeholder="Recipient Name"></div></td><td><div class="mt-2 error"><select class="form-control tintype form-select"  name="TINMatchingDetails.Recipients[' + j + '].TINType" placeholder="Tin Type"><option value="">TIN Type</option><option>EIN</option><option>SSN</option></select></div > </td><td><div class="mt-2 error"><input name="TINMatchingDetails.Recipients[' + j + '].TIN" type="text" placeholder="TIN" class="form-control tin" maxlength="9"></div></td><td class="text-center"><a class="btn-rounded-hover delete-record rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
             j++;
             i++;
         });
         $('#dynamic-table').on('click', '.delete-record', function () {
-          
+
             $(this).parent().parent().remove();
             j--; //decremnt count
             resetValues(); //call to reset values
         });
         function resetValues() {
-         
+
             counter = 0; //initialze to 1
-            increvalue=1;
+            increvalue = 1;
             //looping through tbody
             $("#dynamic-table tr").each(function () {
                 $(this).find("td:first").html(increvalue);
@@ -110,11 +115,11 @@
             })
             if (counter == 1) {
                 $('.delete-record').hide();
-
             }
             i = increvalue;
         }
     });
+
     function CreateRequest() {
         var formdata = $("#TinMatchingRecipientsForm").serialize();
         $("#btnCreate > i").show();

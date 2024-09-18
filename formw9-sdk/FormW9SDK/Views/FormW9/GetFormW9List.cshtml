@@ -1,0 +1,228 @@
+﻿@model FormW9SDK.Models.FormW9.FormW9ListResponse
+@using FormW9SDK.Models.Utilities
+
+<head>
+    <link href="~/css/icons-mdi/css/materialdesignicons.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        @if (Model != null && Model.FormW9Records != null && Model.FormW9Records.Any(x => x.SubmissionId != null && x.SubmissionId != Guid.Empty))
+        {
+            <div class="fs-20 text-dark mt-5">
+                <span class=" position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model.Requester.BusinessNm</span> <span class="text-muted fs-14">
+                    @if ((Model.Requester.TIN).Length > 10)
+                    {
+                        <span>(SSN : @Model.Requester.TIN)</span>
+                    }
+                    else
+                    {
+                        <span>(EIN :@Model.Requester.TIN)</span>
+                    }
+            </div>
+            <div class='d-flex align-items-center justify-content-between mt-2 pt-2'>
+                <div>
+                    <h1 class='head-1'>List FormW-9</h1>
+                    <div class="heading-bottom-line position-relative pb-0  mb-3"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <table class="table table-striped mt-4 table-bordered">
+                    <tr>
+                        <th class="text-center">Submission Id</th>
+                        <th class="text-center">PayeeRef</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">W-9 Status</th>
+                        <th class="text-center">TIN Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    <tbody>
+                        @foreach (var formW9Details in Model.FormW9Records)
+                        {
+                            <tr>
+                                <td class="text-left">
+                                    @formW9Details.SubmissionId
+                                </td>
+                                <td class="text-left">
+                                    @if (formW9Details.PayeeRef != null)
+                                    {
+                                        @formW9Details.PayeeRef
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td class="text-left">
+                                    @if (formW9Details.Email != null)
+                                    {
+                                        @formW9Details.Email
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+
+                                </td>
+                                <td class="text-left">
+                                    @if (formW9Details.W9Status != null)
+                                    {
+                                        @formW9Details.W9Status
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+
+                                </td>
+                                <td class="text-left">
+                                    @if (formW9Details.TINMatching?.Status != null)
+                                    {
+                                        @formW9Details.W9Status
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+
+                                </td>
+                                <td class="text-center">
+                                    <div class="dropdown action d-md-flex justify-content-between align-items-center px-4">
+                                        <button type="button" class="btn-rounded-hover rounded-circle p-2 lh-1 border-0"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical text-muted fs-4"></i>
+                                        </button>
+                                        <ul class="dropdown-menu ">
+                                            <li><button class="dropdown-item text-dark" onclick="Get('@formW9Details.PayeeRef','@Model?.Requester?.BusinessId')">Get Pdf</button></li>
+                                            <li><button class="dropdown-item text-dark" onclick="Status('@formW9Details.PayeeRef','@Model?.Requester?.BusinessId')">Status</button></li>
+                                            <li><button class="dropdown-item text-dark" onclick="Delete('@formW9Details.SubmissionId')">Delete</button></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    <button class="btn_cancel mb-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'">
+                        <i class="fa fa-arrow-circle-left"></i>
+                        Back
+                    </button>
+                </div>
+            </div>
+        }
+        else if (Model != null && @Model.Requester != null && @Model.Requester.BusinessId != Guid.Empty)
+        {
+            <div class="mt-5">
+                <div class="d-flex align-items-center justify-content-center">
+                    <p class="mt-2 mb-0 text-center text-danger fw-600">
+                        There are no W-9s forms created under the business (@Model?.Requester?.BusinessNm). Click "Request By Email" button to request W-9s from your vendors.
+                    </p>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn_primary" onclick="location.href='@Url.Action("CreateFormW9View", "FormW9" ,new{businessId=Model?.Requester?.BusinessId,businessName=Model?.Requester?.BusinessNm,tin=Model?.Requester?.TIN})'"> Request By Email</button>
+                </div>
+                <div>
+                    <button class="btn_cancel shadow mb-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'"><i class="fa fa-arrow-circle-left"></i> Back   </button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="spinner-border" role="status" style="display:none">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="offcanvas offcanvas-end w-50 modal-xl modal-md modal-dialog-scrollable m-0 h-100 ms-auto" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header  rounded-0 border-0 bg-secondary">
+            <h5 id="offcanvasRightLabel" class="modal-title">Request PDF Url Response</h5>
+            <button type="button" class="btn-close text-reset bg-white rounded-circle border-0 fw-bold position-absolute end-n-10 top-n-13 modal-close button-hide fs-18 fw-500" style="top: auto;" data-bs-dismiss="offcanvas" aria-label="Close"> X</button>
+        </div>
+        <div id="canvas">
+        </div>
+    </div>
+
+
+</body>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function Status(payeeRef, businessId) {
+        $(".spinner-border").show();
+        $.ajax({
+
+            url: "/FormW9/GetStatus/",
+            cache: false,
+            type: 'GET',
+            data: { payeeRef: payeeRef, businessId: businessId },
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $(".spinner-border").hide();
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $(".spinner-border").hide();
+            }
+        });
+    }
+
+    function Delete(submissionId) {
+        $(".spinner-border").show();
+            $.ajax({
+
+                url: "/FormW9/Delete/",
+                cache: false,
+                type: 'GET',
+                data: { submissionId: submissionId },
+                success: function (data) {
+                    $(".modal-dialog").addClass("edit-dialog");
+                    $('#ModelBody').html(data);
+                    $('#myModal').modal("show");
+                    $(".modal-close").click(function () {
+                        location.reload();
+                    });
+                    $(".spinner-border").hide();
+                },
+                error: function (err) {
+                    console.log(err.responseText);
+                    $(".spinner-border").hide();
+                }
+            });
+        else {
+            $(".spinner-border").hide();
+            return false;
+
+        }
+    }
+
+    function Get(payeeRef, businessId) {
+
+
+        $(".spinner-border").show();
+        $.ajax({
+
+            url: "/FormW9/Get/",
+            cache: false,
+            type: 'GET',
+            data: { payeeRef: payeeRef, businessId: businessId },
+            success: function (data) {
+                $(".modal-dialog").addClass("edit-dialog");
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $(".spinner-border").hide();
+
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $(".spinner-border").hide();
+            }
+        });
+    }
+
+
+
+</script>

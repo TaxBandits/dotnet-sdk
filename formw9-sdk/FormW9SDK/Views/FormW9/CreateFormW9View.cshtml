@@ -1,0 +1,140 @@
+﻿@model FormW9SDK.Models.FormW9.W9RequestByEmailRequest
+@using FormW9SDK.Models.Base
+@using FormW9SDK.Models.Utilities
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+
+</head>
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "FormW9" }))
+{
+    <div class="container">
+        <div class='mt-5'>
+       
+            <div class="fs-20 text-dark">
+                @if (Model?.Requester?.BusinessName != null)
+                {
+                    <span class="heading-bottom-line position-relative pb-0  mb-3"></span> <span class="head-1 me-3">@Model?.Requester?.BusinessName</span> <span class="text-muted fs-14"></span>
+                }
+              
+                @if (Model?.Requester?.TIN.Length > 10)
+                {
+                    <span>(SSN : @Model?.Requester?.TIN)</span>
+                }
+                else
+                {
+                    <span>(EIN : @Model?.Requester?.TIN)</span>
+                }
+            </div>
+            <div class="table-responsive overflow-hidden m-3">
+
+                <table class="table table-bordered text-field-table w-100 mx-auto" id="tbl_posts2" style="border-collapse:collapse">
+                    <thead>
+                        <tr class="bg-gray">
+                            <th class="fw-500 text-dark text-center" scope="col">S.NO</th>
+                            <th class="fw-500 text-dark text-center" scope="col"><span class="text-danger">*</span>Name</th>
+                            <th class="fw-500 text-dark text-center" scope="col"><span class="text-danger">*</span>Email</th>
+                            <th class="fw-500 text-dark position-relative text-center" scope="col"><span class="text-danger">*</span>Payee Ref <div class="form-check form-check-inline p-0 m-0"></div></th>
+                            <th class="fw-500 text-dark text-center" scope="col" width="75px"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="dynamic-table">
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a class="btn-rounded-hover add-RecipientList rounded-circle p-2 lh-1">
+                                    <i class="mdi mdi-plus-circle-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="Add"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center m-3">
+            <button type="button" class=" btn_cancel btn-md  fw-500'" onclick="location.href='@Url.Action("GetBusinessList", "Business")'">
+                <i class="fa fa-arrow-circle-left"></i>
+                Back
+            </button>
+            <button type="button" class='btn btn_primary btn-md shadow fw-500 text-white' onclick="CreateRequest('@Model?.Requester?.BusinessId','@Model?.Requester?.BusinessName','@Model?.Requester.TIN')" id="btnCreate">Submit <i class="fa fa-spinner fa-spin" aria-hidden="true" id="CreateSpinner" style="display:none"></i></button>
+        </div>
+        @Html.HiddenFor(x=>x.Requester.BusinessId)
+
+    </div>
+
+}
+<script>
+    $(document).ready(function () {
+        var j = 0;
+        var i = 1;
+        $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><input name="Recipients[' + j + '].Name" type="text" placeholder="Name" class="form-control name"></div></td><td><div class="mt-2 error"><input name="Recipients[' + j + '].Email" type="text" class="form-control email" placeholder="Email"></div></td><td><div class="mt-2 error"><input name="Recipients[' + j + '].PayeeRef" type="text" placeholder="Payee Ref" class="form-control" maxlength="9"></div></td><td class="text-center"><a class=" btn-rounded-hover delete-record  rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+        $('.delete-record').hide();
+        j++;
+        i++;
+        //added class to inputs
+        $('a.add-RecipientList').click(function () {
+
+            $('.delete-record').show();
+            $("#dynamic-table").append('<tr class="align-middle"><td><div class="mt-2 error text-center">' + i + '</div></td><td><div class="mt-2 error"><input name="Recipients[' + j + '].Name" type="text" placeholder="Name" class="form-control name"></div></td><td><div class="mt-2 error"><input name="Recipients[' + j + '].Email" type="text" class="form-control email" placeholder="Email"></div></td><td><div class="mt-2 error"><input name="Recipients[' + j + '].PayeeRef" type="text" placeholder="Payee Ref" class="form-control" maxlength="9"></div></td><td class="text-center"><a class="btn-rounded-hover delete-record rounded-circle p-2 lh-1" ><i class="mdi mdi-delete-outline text-muted fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom" role="button" aria-label="delete" data-bs-original-title="delete"></i > </a></td > </tr>');
+            j++;
+            i++;
+        });
+        $('#dynamic-table').on('click', '.delete-record', function () {
+
+            $(this).parent().parent().remove();
+            j--; //decremnt count
+            resetValues(); //call to reset values
+        });
+        function resetValues() {
+
+            counter = 0; //initialze to 1
+            increvalue = 1;
+            //looping through tbody
+            $("#dynamic-table tr").each(function () {
+                $(this).find("td:first").html(increvalue);
+                $(this).find('.name').attr("name", "Recipients[" + counter + "].Name");
+                $(this).find('.email').attr("name", "Recipients[" + counter + "].Email");
+                $(this).find('.payeeref').attr("name", "Recipients[" + counter + "].PayeeRef");
+
+                counter++; //increment count
+                increvalue++;
+            })
+            if (counter == 1) {
+                $('.delete-record').hide();
+            }
+            i = increvalue;
+        }
+    });
+
+    function CreateRequest(businessId) {
+        var formdata = $("#FormW9").serialize();
+        $("#btnCreate > i").show();
+        $("#btnCreate").prop("disabled", true);
+        $.ajax({
+            url: "/FormW9/CreateFormW9/",
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: function (data) {
+                $('#ModelBody').html(data);
+                $('#myModal').modal("show");
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+                $(".modal-close").click(function () {
+                    if ($(data).find('.sucesssrecord').length > 0) {
+                        window.location.href = "/FormW9/GetFormW9List?businessId=" + businessId;
+
+                    }
+                });
+            },
+            error: function (err) {
+                console.log(err.responseText);
+                $("#btnCreate > i").hide();
+                $("#btnCreate").prop("disabled", false);
+            }
+        });
+    }
+</script>

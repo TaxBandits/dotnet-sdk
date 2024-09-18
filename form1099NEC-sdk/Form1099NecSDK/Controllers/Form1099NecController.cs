@@ -131,6 +131,7 @@ namespace Form1099NecSDK.Controllers
                         {
                             necGetReturnResponseJSON = JsonConvert.SerializeObject(listResponse, Formatting.Indented);
                             necListReturnResponse = JsonConvert.DeserializeObject<Form1099NecListResponse>(necGetReturnResponseJSON);
+                           
                         }
                     }
                     else
@@ -523,7 +524,7 @@ namespace Form1099NecSDK.Controllers
             if (!string.IsNullOrWhiteSpace(DraftPdfUrl))
             {
                 string fileExtension = DraftPdfUrl.Substring(DraftPdfUrl.LastIndexOf('.') + 1, DraftPdfUrl.Length - (DraftPdfUrl.LastIndexOf('.') + 1));
-                byte[] file = Utility.GetForm1099NecPdfS3ByFileName(DraftPdfUrl);
+                byte[] file = await Utility.GetForm1099NecPdfS3ByFileName(DraftPdfUrl);
                 string fileName = Path.GetFileName(DraftPdfUrl);
                 if (file != null && file.Length > 0)
                 {
@@ -616,7 +617,7 @@ namespace Form1099NecSDK.Controllers
             if (!string.IsNullOrWhiteSpace(PdfUrl))
             {
                 string fileExtension = PdfUrl.Substring(PdfUrl.LastIndexOf('.') + 1, PdfUrl.Length - (PdfUrl.LastIndexOf('.') + 1));
-                byte[] file = Utility.GetForm1099NecPdfS3ByFileName(PdfUrl);
+                byte[] file = await Utility.GetForm1099NecPdfS3ByFileName(PdfUrl);
                 string fileName = Path.GetFileName(PdfUrl);
 
                 if (file != null && file.Length > 0)

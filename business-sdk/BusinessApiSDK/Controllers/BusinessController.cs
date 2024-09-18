@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.Xml;
+using static BusinessApiSDK.Models.Base.EntityBase;
 using Constants = BusinessApiSDK.Models.Utilities.Constants;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -17,7 +18,6 @@ namespace BusinessApiSDK.Controllers
         [HttpGet]
         public IActionResult CreateBusiness()
         {
-
             return View();
         }
         #endregion
@@ -31,7 +31,7 @@ namespace BusinessApiSDK.Controllers
             var businessCreateResponse = new BusinessCreateResponse();
 
             // Generate JSON for Business
-            var requestJson = JsonConvert.SerializeObject(createBusiness, Formatting.Indented);
+            var requestJson = JsonConvert.SerializeObject(createBusiness,Formatting.Indented);
 
             //Get Access token from OAuth API response 
             GetAccessToken accessToken = new GetAccessToken(HttpContext);
@@ -73,7 +73,6 @@ namespace BusinessApiSDK.Controllers
             }
 
             return PartialView("_BusinessCreateResponse", businessCreateResponse);
-
         }
         #endregion
 
@@ -84,7 +83,7 @@ namespace BusinessApiSDK.Controllers
             var businessListResponse = new BusinessListResponse();
             var business = new List<Business>();
             var getResponseJSON = string.Empty;
-           
+
             //Get Access token from GetAccessToken Class
             GetAccessToken accessToken = new GetAccessToken(HttpContext);
             //Get Access token from OAuth API response
@@ -95,7 +94,7 @@ namespace BusinessApiSDK.Controllers
                 using (var apiClient = new HttpClient())
                 {
                     //API URL to Get Business List Return
-                    string requestUri = Constants.BUSINESS_LIST; 
+                    string requestUri = Constants.BUSINESS_LIST;
                     //Get URLs from App.Config
                     apiClient.BaseAddress = new Uri(Utility.GetAppSettings(Constants.TBS_PUBLIC_API_BASE_URL));
                     //Construct HTTP headers
@@ -115,18 +114,16 @@ namespace BusinessApiSDK.Controllers
                             business = businessListResponse.Businesses;
                         }
                     }
-                    
-
                 }
-
             }
+
             return View("GetBusinessList", business);
         }
         #endregion
 
         #region Get BusinessDetail By BusinessId
         [HttpGet]
-        public IActionResult GetBusinessDetail(Guid businessId)
+        public IActionResult GetBusinessDetail(Guid? businessId)
         {
             var businessGetResponse = new BusinessGetResponse();
             var businessGetResponseJSON = string.Empty;
@@ -171,7 +168,6 @@ namespace BusinessApiSDK.Controllers
                             businessGetResponseJSON = JsonConvert.SerializeObject(getResponse, Formatting.Indented);
                             businessGetResponse = JsonConvert.DeserializeObject<BusinessGetResponse>(businessGetResponseJSON);
                         }
-
                     }
                 }
             }
@@ -272,7 +268,6 @@ namespace BusinessApiSDK.Controllers
             }
 
             return PartialView("_BusinessUpdateResponse", businessupdateResponse);
-
         }
         #endregion
     }

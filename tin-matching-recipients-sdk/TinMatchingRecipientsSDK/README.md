@@ -11,15 +11,12 @@ TinMatchingRecipients API SDK written on C# in .Net Core framework(Version 6.0) 
 - API URL: https://testapi.taxbandits.com/
 
 ## Cloning and Running the Application in local
- - Clone the project into your local machine 
-    ```bash
-    git clone https://github.com/TaxBandits/tbs-dotnet-sdk.git
-    ```
+ - Clone the project into your local machine https://github.com/TaxBandits/tbs-dotnet-sdk.git.
  - Let's Navigate into the tin-matching-recipients-sdk folder.
  - Run the TinMatchingRecipientsSDK application provided for sandbox testing.
 
 ## Packages need to install
-To install Packages, right-click on your project in the Solution Explorer window and select ï¿½Manage NuGet packagesï¿½ï¿½. Then, in the NuGet Package Manager window, search for required pacakges and install it.  
+To install Packages, right-click on your project in the Solution Explorer window and select “Manage NuGet packages…”. Then, in the NuGet Package Manager window, search for required pacakges and install it.  
   
 * System.IdentityModel.Tokens.Jwt:
     - This package for creating, serializing and validating JSON Web Tokens.
@@ -46,24 +43,26 @@ To install Packages, right-click on your project in the Solution Explorer window
 ## Request TIN Matching
 For requesting TIN Matching, pass the recipient data as input along with Access Token in the header as Bearer Token (Generated using TaxBandits OAuth authentication API). After requesting request method in TIN Matching Recipient API, the response will be shown in a modal.
 
-**TBS Public API Base URL:** [https://testapi.taxbandits.com/v1.7.3/TINMatchingRecipients/Request]
+**TBS Public API Base URL:** [https://testapi.taxbandits.com/{version}/TINMatchingRecipients/Request]
 
 ## List TIN Matching
 For listing TIN Matching Recipients, BusinessId is passed as query parameter  along with Access Token in the header as Bearer Token (Generated using TaxBandits OAuth authentication API).
 After requesting list method in TIN Matching Recipients, the reponse is shown as a table.
 
-**TBS Public API Base URL:** [https://testapi.taxbandits.com/v1.7.3/TINMatchingRecipients/List]
+**TBS Public API Base URL:** [https://testapi.taxbandits.com/{version}/TINMatchingRecipients/List]
 ## TIN Matching Status
 For displaying TIN Matching Recipients Status, pass the SubmissionId and RecordId as query along with Access Token in the header as Bearer Token (Generated using TaxBandits OAuth authentication API). 
 After requesting status method in TIN Matching Recipients API, the response will be shown in a modal.
 
-**TBS Public API Base URL:** [https://testapi.taxbandits.com/v1.7.3/TINMatchingRecipients/Status]
+**TBS Public API Base URL:** [https://testapi.taxbandits.com/{version}/TINMatchingRecipients/Status]
 
 ## Cancel TIN Matching 
 For canceling TIN Matching Recipients, pass the SubmissionId and RecordId as query along with Access Token in the header as Bearer Token (Generated using TaxBandits OAuth authentication API). Cancel method in TIN Matching Recipient API shows success response only if requested TIN Matching Recipient Status is in ORDER CREATED else it will show error response. By passing these values we request to TBS Public API Base URL. 
 After requesting status method in TIN Matching Recipients API, the response will be shown in a modal.
 
-**TBS Public API Base URL:** [https://testapi.taxbandits.com/v1.7.3/TINMatchingRecipients/CancelRequest]
+**TBS Public API Base URL:** [https://testapi.taxbandits.com/{version}/TINMatchingRecipients/CancelRequest]
+
+In the above URLs, {version} is the endpoint version of TaxBandits API.
     
 ### Project Folder Structure
 * controllers:

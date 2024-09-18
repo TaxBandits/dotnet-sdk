@@ -26,14 +26,7 @@ namespace Form1099NecSDK.Models.Form1099NEC
         //[MaxLength(9, ErrorMessage = "ERR-SSN-03:Maximum 9 digits only allowed")]
 
         public string TIN { get; set; }
-
-        /// <summary>
-        /// Recipient's First Name you want to create return.
-        /// </summary>
         [DataMember]
-        //[Required(ErrorMessage = "ERR-FNAME-01:Recipient's First Name is required")]
-        //[RegularExpression(@"[0-9a-zA-Z\s-\(\)\&\,\.'s]+$", ErrorMessage = "ERR-TRADENME-01:Enter valid First Name")]
-
         public string FirstPayeeNm { get; set; }
 
         /// <summary>
@@ -41,8 +34,17 @@ namespace Form1099NecSDK.Models.Form1099NEC
         /// </summary>
         [DataMember]
         //[RegularExpression(@"[0-9a-zA-Z\s-\(\)\&\,\.'s]+$", ErrorMessage = "ERR-TRADENME-01:Enter valid Last Name")]
-
+       
         public string SecondPayeeNm { get; set; }
+        [DataMember]
+        public string FirstNm { get; set; }
+        [DataMember]
+        public string LastNm { get; set; }
+        [DataMember]
+        public string MiddleNm { get; set; }
+        [DataMember]
+        public string Suffix { get; set; }
+   
 
         /// <summary>
         /// True for other than US address.
@@ -88,5 +90,6 @@ namespace Form1099NecSDK.Models.Form1099NEC
 
         //[RegularExpression("([0-9]+$)", ErrorMessage = "ERR-PHONE-04:Only numbers are allowed")]
         public string Phone { get; set; }
+     
     }
 }

@@ -1,0 +1,47 @@
+﻿<style>
+    body {
+        overflow-x: hidden !important;
+    }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body class="pt-0 pb-0">
+    <div class="bg-light-blue h-100vh">
+        <div class="row justify-content-center pt-180px">
+            <div class="col-md-12 mt-3 text-center">
+                <img src="../images/tbsLogo1.png" alt="TaxBandits Logo" class="mb-5 logo">
+                <h3 class="fw-bold">Form 1099-MISC</h3>
+            </div>
+            <div class="col-md-4 col-lg-4 mt-4 d-flex w-lg-35 mx-3 shadow rounded p-4 bg-white card-box  position-relative">
+                <div>
+                    <img class="top-eye-icon" src="../images/shape-4.png" alt="TaxBandits">
+                    <div class="text-center grediant-bg mb-3">
+                        <img src="../images/1099MISC.png" class=" w-70px" alt="Form1099MISC">
+                    </div>
+                    <p class="mt-3 mb-0 text-start ">
+                        Form 1099-MISC is used by Payers to report Miscellaneous payments like Rents, Royalties etc, made to independent contractors, businesses, sole proprietors, and self-employed individuals.
+                    </p>
+                    <p class="mt-4">
+                        Using this SDK, you can Create, Update, Get Status, List, Transmit and Delete the 1099-MISC forms.
+                    </p>
+                    <div class="text-center mt-4">
+                        <button class="btn btn_primary mx-2 mx-3" onclick="location.href='@Url.Action("GetBusinessList", "Business")'">Form1099MISC</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $('header').empty();
+        $('footer').empty();
+    });
+</script>

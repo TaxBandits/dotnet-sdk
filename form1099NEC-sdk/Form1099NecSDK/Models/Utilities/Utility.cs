@@ -81,39 +81,51 @@ namespace Form1099NecSDK.Models.Utilities
         #endregion
 
         #region Get File Path With Bucket Name using FileName
-        private static byte[] GetFilePathWithBucketNameusingFileName(string fileName)
+        private static async Task<byte[]> GetFilePathWithBucketNameusingFileName(string fileUrl)
         {
-
             byte[] toBytes = null;
-            AmazonS3Client client = WebStorageConnection();
-            GetPreSignedUrlRequest request = new GetPreSignedUrlRequest();
-            request.BucketName = GetAppSettings(Constants.BUCKET_NAME);
-            request.Key = fileName;
-            request.Expires = DateTime.Now.AddHours(1);
-            request.Protocol = Protocol.HTTPS;
-
-            string filePath = client.GetPreSignedURL(request);
-
-            GetObjectRequest getObjectRequest = new GetObjectRequest
+            try
             {
-                BucketName = GetAppSettings(Constants.BUCKET_NAME),
-                Key = fileName,
-                // Provide encryption information of the object stored in S3.
-                ServerSideEncryptionCustomerMethod = ServerSideEncryptionCustomerMethod.AES256,
-                ServerSideEncryptionCustomerProvidedKey = GetAppSettings(Constants.BASE_64_KEY),
-            };
+                AmazonS3Client client = WebStorageConnection();
+                var bucketName = GetAppSettings(Constants.BUCKET_NAME);
 
-            // Issue request and remember to dispose of the response
-            using (GetObjectResponse response = client.GetObjectAsync(getObjectRequest).Result)
-            {
-                using (var memoryStream = new MemoryStream())
+                // Extract the key from the URL
+                var uri = new Uri(fileUrl);
+                var key = uri.AbsolutePath.TrimStart('/'); // Remove leading slash if present
+
+                // Create the GetObjectRequest
+                var getObjectRequest = new GetObjectRequest
                 {
-                    response.ResponseStream.CopyTo(memoryStream);
-                    toBytes = memoryStream.ToArray();
+                    BucketName = bucketName,
+                    Key = key,
+                    ServerSideEncryptionCustomerMethod = ServerSideEncryptionCustomerMethod.AES256,
+                    ServerSideEncryptionCustomerProvidedKey = GetAppSettings(Constants.BASE_64_KEY),
+                };
+
+                // Issue request and remember to dispose of the response
+                using (var response = await client.GetObjectAsync(getObjectRequest))
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await response.ResponseStream.CopyToAsync(memoryStream);
+                        toBytes = memoryStream.ToArray();
+                    }
                 }
             }
+            catch (AmazonS3Exception ex)
+            {
+                // Log or handle Amazon S3 specific errors
+                Console.WriteLine($"Amazon S3 error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Log or handle general errors
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
             return toBytes;
         }
+
         #endregion
 
         #region Get Content Type by Extension
@@ -212,18 +224,42 @@ namespace Form1099NecSDK.Models.Utilities
         #endregion
 
         #region GetForm1099NecPdfS3ByFileName
-        public static byte[] GetForm1099NecPdfS3ByFileName(string fileName)
+        public static async Task<byte[]> GetForm1099NecPdfS3ByFileName(string fileName)
         {
             byte[] uploadedFile = null;
             if (!string.IsNullOrWhiteSpace(fileName))
             {
-                fileName.Replace(@"/ /g", string.Empty);
+                fileName = fileName.Replace(@"/ /g", string.Empty);
                 string s3Path = GetAppSettings(Constants.AMAZON_S3_PATH);
                 fileName = fileName.Replace(s3Path, string.Empty);
-                uploadedFile = GetFilePathWithBucketNameusingFileName(fileName);
-
+                uploadedFile = await GetFilePathWithBucketNameusingFileName(fileName);
             }
             return uploadedFile;
+        }
+
+        #endregion
+
+        #region Business  Suffix
+        public enum BusinessSuffix
+        {
+            [Display(Name = "JR")]
+            JR,
+            [Display(Name = "SR")]
+            SR,
+            [Display(Name = "I")]
+            I,
+            [Display(Name = "II")]
+            II,
+            [Display(Name = "III")]
+            III,
+            [Display(Name = "IV")]
+            IV,
+            [Display(Name = "V")]
+            V,
+            [Display(Name = "VI")]
+            VI,
+            [Display(Name = "VII")]
+            VII,
         }
         #endregion
     }
