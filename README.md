@@ -1,8 +1,8 @@
 # TaxBandits SDK for .NET
 ## Overview
-TaxBandits API enables the automation of Form W-9 & 1099 forms and simplifies the preparation and e-filing of various tax returns with the federal and state. Our developer-friendly API supports the e-filing of 1099-NEC, 1099-MISC, 1099-K, other 1099 forms, W-2, 941, 940, and 1095 forms.
+The TaxBandits API enhances the automation of Form W-9 and various 1099 forms, simplifying the preparation and e-filing of both federal and state tax returns. Designed with developers in mind, the API supports automation for Form W-9, [TIN Matching Services](https://developer.taxbandits.com/tin-matching/), and BOI Reporting.
 
-To check out the complete list of forms we support, [visit here](https://developer.taxbandits.com/#forms).
+To check out the complete list of forms we support, [visit here](https://developer.taxbandits.com/supported-forms/).
 
 Jump To
 - [OAuth SDK](https://github.com/TaxBandits/tbs-dotnet-sdk/tree/main/oauth-sdk)
